@@ -5,6 +5,10 @@ This project is a solution to the problem statement provided by flipkart GRiD 3.
 
 **1. use the createmarkers.py node in make_markers package :**
 
+
+### How to build:
+- In terminal `catkin_make -DCMAKE_BUILD_TYPE=Release`
+
 ### How to run:
 
 <!-- 1. To open arm in Gazebo | Terminal 1: `roslaunch arm_gazebo gazebo_spawn.launch` -->
