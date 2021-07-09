@@ -1,0 +1,3 @@
+[submodule "esp_8266_rosserial"]
+	path = esp_8266_rosserial
+	url = https://github.com/Infinity8sailor/esp_8266_rosserial.git
