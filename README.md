@@ -1,6 +1,11 @@
 # flipkart GRiD3 Robotics challenge 
 This project is a solution to the problem statement provided by flipkart GRiD 3.0
 
+# Clone repo instructions
+```sh
+git clone --recurse-submodules https://github.com/shivam675/flipkart-GRiD3.git
+```
+
 # Create Markers:
 
 **1. use the createmarkers.py node in make_markers package :**
