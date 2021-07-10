@@ -44,7 +44,7 @@
     <!-- <group if="$(eval arg('image_width') ==640)"> -->
 <node  name="camera_info" pkg="rostopic" type="rostopic"
   args="pub /camera/camera_info sensor_msgs/CameraInfo
- '{header: {seq: 0, stamp: {secs: 0, nsecs: 0}, frame_id: 'camera1'},
+ '{header: {seq: 0, stamp: {secs: 0, nsecs: 0}, frame_id: 'camera_link'},
   height: 480, width: 640, distortion_model: 'plumb_bob',
   D: [0.08269409104660361, -0.16570658726478218, 0.0013173694798400222, -0.0014110498528553663, 0.0],
   K: [519.734208757597, 0.0, 302.85096428096654, 0.0, 520.5923676830233, 252.63525359615707, 0.0, 0.0, 1.0],
