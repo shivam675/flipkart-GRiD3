@@ -2,7 +2,7 @@
 <root>
     <image_width>1280</image_width>
     <image_height>720</image_height>
-    <camera_name>narrow_stereo</camera_name>
+    <camera_name>usb_cam_redmi</camera_name>
     <camera_matrix>
         <rows>3</rows>
         <cols>3</cols>
