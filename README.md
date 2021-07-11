@@ -22,14 +22,29 @@ git clone --recurse-submodules https://github.com/shivam675/flipkart-GRiD3.git
 2. Run **aruco_detect_ros.launch** fine | Terminal 2 (aruco node): `roslaunch make_markers aruco_detect_ros.launch`
 
 
-# Tested on System config:
+# Tested on System config 1:
 - Hardware: i3 quad thread AMD64
 - ROS: Melodic
 - OS: Ubuntu 18.04 LTS
-- 2-core AMD
-- 8 GB RAM
+- processor arch: 2-core AMD64 Arch
+- 8 GB 1666 MHz RAM
 
-# To-do:
+# Tested on System config 2:
+- Hardware: Ryzen 5 AMD64
+- ROS: Melodic
+- OS: Ubuntu 18.04 LTS
+- processor arch: 4-core AMD64
+- 8 GB 3200 MHz RAM 
+
+
+# Done Part:
 1. Camera calibration for intrensic and extrensic params
 2. Multiple aruco_marker detection
 3. python node to publish all the tfs of the aruco markers in ros
+
+
+# To-do:
+1. All major things related to navigation
+2. Publishing confirm TF of each bot
+3. extracting odom from encoders of the robot
+4. Publishing fake laserscan from the 2d image
