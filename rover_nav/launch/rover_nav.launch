@@ -1,0 +1,36 @@
+<launch>
+
+    <!-- <include file="$(find obito_nav)/launch/amcl.launch" /> -->
+    
+    <param name="robot_description" command="$(find xacro)/xacro.py '$(find akatsuki_description)/urdf/bot.xacro'"/>
+
+    <node name="robot_state_publisher_movebase" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+
+    <node name="joint_state_publisher_movebase" pkg="joint_state_publisher" type="joint_state_publisher" >
+        <param name="use_gui" value="False" />
+    </node>
+
+    
+    <arg name="map_file" default="$(find obito_nav)/maps/small_world.yaml"/>
+    <!-- <arg name="map_file" default="$(find navigation)/maps/map_one.yaml"/> -->
+  <node pkg="map_server" name="map_server" type="map_server" output="screen" args="$(arg map_file)"/>
+
+  <node pkg="move_base" type="move_base" respawn="false" output="screen" name="move_base">
+    <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+    
+    <rosparam file="$(find obito_nav)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find obito_nav)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+
+    <rosparam file="$(find obito_nav)/config/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find obito_nav)/config/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find obito_nav)/config/move_base_param.yaml" command="load"  ns="/"/>
+    <rosparam file="$(find obito_nav)/config/dwa_local_planner.yaml" command="load" />
+
+
+   
+  </node>
+
+  
+
+</launch>
