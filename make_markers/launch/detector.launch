@@ -80,6 +80,6 @@
     </node> -->
 
    <group if="$(arg use_rviz)" >
-        <node pkg="rviz" type="rviz" name="markers_extrinsic" args="-d $(find aruco_detector_ocv)/config/aruco_opencv.rviz"/>
+        <node pkg="rviz" type="rviz" name="markers_extrinsic" args="-d $(find make_markers)/rviz/sim_config.rviz"/>
     </group>
 </launch>

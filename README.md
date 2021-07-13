@@ -12,15 +12,22 @@ git clone --recurse-submodules https://github.com/shivam675/flipkart-GRiD3.git
 
 
 ### How to build:
-- In terminal `catkin_make -DCMAKE_BUILD_TYPE=Release`
+- In terminal `catkin_make -DCMAKE_BUILD_TYPE=Release -j4`
+- ADD the following line in .bashrc file
+- `export GAZEBO_MODEL_PATH=/home/{your_user_name}/catkin_ws/src/rover_sim/models`
+- 
 
 ### How to run:
-
+#### FOR IRL
 <!-- 1. To open arm in Gazebo | Terminal 1: `roslaunch arm_gazebo gazebo_spawn.launch` -->
 <!-- 2. To open arm in Rviz   | Terminal 2: `roslaunch arm_prismatic_octomap bringup.launch` -->
 1. Run **ros_camera.launch** file | Terminal 1 (camera_driver): `roslaunch camera_driver ros_camera.launch`
 2. Run **aruco_detect_ros.launch** fine | Terminal 2 (aruco node): `roslaunch make_markers aruco_detect_ros.launch`
 
+#### FOR SIMULATION
+
+1. Run **ros_camera.launch** file | Terminal 1 (camera_driver): `roslaunch rover_sim gazebo_spawn.launch`
+2. Run **aruco_detect_ros.launch** fine | Terminal 2 (aruco node): `roslaunch make_markers aruco_detect_ros.launch`
 
 # Tested on System config 1:
 - Hardware: i3 quad thread AMD64
