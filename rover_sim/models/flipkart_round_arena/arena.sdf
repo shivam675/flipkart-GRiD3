@@ -67,7 +67,7 @@
           <distortionT1>0.0</distortionT1>
           <distortionT2>0.0</distortionT2>
         </plugin>
-        <pose frame=''>0 0 3 -3.14119 -0 0</pose>
+        <pose frame=''>0 0 5 -3.14119 1.571 1.571</pose>
       </sensor>
     </link>
   </model>

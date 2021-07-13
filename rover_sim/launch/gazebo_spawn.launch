@@ -1,9 +1,5 @@
 <launch>
 <!--   ebot -->
-<param name="robot_description" command="$(find xacro)/xacro --inorder '$(find rover_description)/urdf/main.xacro'"/>
-
-
-
   <arg name="world" default="empty"/>
   <arg name="paused" default="false"/>
   <arg name="use_sim_time" default="true"/>
@@ -12,7 +8,7 @@
   <arg name="debug" default="false"/>
 
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-     <!-- <arg name="world_name" value="$(find arm_gazebo)/worlds/home.world"/> -->
+     <arg name="world_name" value="$(find rover_sim)/world/arena.world"/>
     <arg name="paused" value="$(arg paused)"/>
     <arg name="use_sim_time" value="$(arg use_sim_time)"/>
     <arg name="gui" value="$(arg gui)"/>
@@ -20,22 +16,13 @@
     <arg name="debug" value="$(arg debug)"/>
   </include>
 
-	<arg name="x" default="0"/>
-	<arg name="y" default="0"/>
-	<arg name="z" default="0"/>
-	<arg name="r" default="0"/>
-	<arg name="p" default="0"/>
-	<arg name="ya" default="0"/>		
 
-<!-- Spawn the aRm robot model -->
-	<node name="mybot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" 
-	    args="-urdf -param robot_description 
-            -model cam_bot 
-            -x $(arg x) 
-            -y $(arg y) 
-            -z $(arg z) 
-            -R $(arg r) 
-            -P $(arg p) 
-            -Y $(arg ya)" />
-  
-</launch>
+<node pkg="tf" type="static_transform_publisher" name="base_link" 
+args="0 0 5 -3.14119 1.571 1.571 base_link camera_link  100"/>
+
+<!-- <node pkg="tf" type="static_transform_publisher" name="laser" args="0 0 0 x y z w  /uav/base_link_ENU /laser  100"/> -->
+
+
+
+
+  </launch>
