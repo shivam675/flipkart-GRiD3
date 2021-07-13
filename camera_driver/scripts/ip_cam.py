@@ -11,7 +11,8 @@ from cv_bridge import CvBridge, CvBridgeError
 #url = "http://192.168.1.5:8080/video"
 #url = 'http://localhost:4747/mjpegfeed'
 # url  = 'http://56.161.165.117:8080/video'
-url = 'http://192.168.43.147:4747/video'
+# url = 'http://192.168.43.147:4747/video'
+url = "http://192.168.0.102:8080/video"
 
 cap = cv2.VideoCapture(url)
 bridge = CvBridge()
@@ -27,8 +28,10 @@ def video_cap():
     rospy.loginfo("INIT DONE !")
     while not rospy.is_shutdown():
         rospy.loginfo_once("IMAGE PUBLISING RN")
-        width=1920
-        height=1080
+        # width=1920
+        # height=1080
+        width=1280
+        height=960
         ret, frame = cap.read()
         dim = (width, height)
         img = cv2.resize(frame, dim)

@@ -22,7 +22,7 @@
       </inertial>
     <visual>
         <geometry>
-          <mesh filename="package://rover_description/meshes/dae_markers/test_modified.dae"/>
+          <mesh filename="package://rover_sim/arena/arena/arena_one.dae"/>
         </geometry>
         <!-- <material name="RED"> -->
           <!-- <color rgba="1.0 0.0 0.0 1.0"/> -->
@@ -30,7 +30,7 @@
       </visual>
       <collision>
         <geometry>
-          <mesh filename="package://rover_description/meshes/dae_markers/test_modified.dae" />
+          <mesh filename="package://rover_sim/arena/arena/arena_one.dae" />
         </geometry>
       </collision>
 </link>
