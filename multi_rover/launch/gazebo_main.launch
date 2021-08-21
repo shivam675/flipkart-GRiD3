@@ -7,10 +7,13 @@
   <!-- <node name="gazebo" pkg="gazebo_ros" type="gazebo" respawn="false" output="screen" /> -->
 
   <!-- start gui -->
-  <node name="gazebo_gui" pkg="gazebo_ros" type="gui" respawn="false" output="screen"/>
-  <node pkg="tf" type="static_transform_publisher" name="base_to_cam" respawn="false" args="0 0 5 0 1 0 0 base_link camera_link 100"/>
+  <!-- <node name="gazebo_gui" pkg="gazebo_ros" type="gzclient" respawn="false" output="screen"/> -->
+
+
+  <!-- <node pkg="tf" type="static_transform_publisher" name="base_to_cam" respawn="false" args="0 0 5 0 1 0 0 base_link camera_link 100"/> -->
 
 
   <!-- include our robots -->
   <include file="$(find multi_rover)/launch/multi_rover.launch"/>
+  <include file="$(find make_markers)/launch/aruco_detect_ros.launch"/>
 </launch>

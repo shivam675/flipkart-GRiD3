@@ -85,6 +85,7 @@
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
     <model name='cam_bot'>
+      <static>1</static>
       <link name='base_link'>
         <pose frame=''>0 0 0 0 -0 0</pose>
         <inertial>
