@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<launch>
+
+<!-- <include file="$(find camera_driver)/launch/ros_camera.launch"/> -->
+<include file="$(find make_markers)/launch/detector.launch"/>
+<include file="$(find make_markers)/launch/aruco_detect_ros.launch"/>
+<include file="$(find rover_description)/launch/robo_cam.launch"/>
+
+<!-- <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="0 0 0 0 0 0 1 camera_link camera1 100" /> -->
+
+</launch>

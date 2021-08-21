@@ -285,10 +285,21 @@
 
 
 
-
-
-
-
+  <gazebo reference="upper_plate">
+    <material>Gazebo/Orange</material>
+  </gazebo>
+    <gazebo reference="liwheel_rightnk1">
+    <material>Gazebo/Orange</material>
+  </gazebo>
+    <gazebo reference="wheel_right">
+    <material>Gazebo/Orange</material>
+  </gazebo>
+  <gazebo reference="wheel_left">
+    <material>Gazebo/Orange</material>
+  </gazebo>
+    <gazebo reference="base_link">
+    <material>Gazebo/White</material>
+  </gazebo>
 
 
 
