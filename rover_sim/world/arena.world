@@ -1,8 +1,8 @@
-<sdf version='1.6'>
+<sdf version='1.7'>
   <world name='default'>
     <light name='sun' type='directional'>
       <cast_shadows>1</cast_shadows>
-      <pose frame=''>0 0 10 0 -0 0</pose>
+      <pose>0 0 10 0 -0 0</pose>
       <diffuse>0.8 0.8 0.8 1</diffuse>
       <specular>0.2 0.2 0.2 1</specular>
       <attenuation>
@@ -12,6 +12,11 @@
         <quadratic>0.001</quadratic>
       </attenuation>
       <direction>-0.5 0.1 -0.9</direction>
+      <spot>
+        <inner_angle>0</inner_angle>
+        <outer_angle>0</outer_angle>
+        <falloff>0</falloff>
+      </spot>
     </light>
     <model name='ground_plane'>
       <static>1</static>
@@ -84,12 +89,68 @@
       <elevation>0</elevation>
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
+    <state world_name='default'>
+      <sim_time>188 729000000</sim_time>
+      <real_time>189 472374222</real_time>
+      <wall_time>1629574964 575639679</wall_time>
+      <iterations>188729</iterations>
+      <model name='cam_bot'>
+        <pose>-0.049908 -0.021226 0.0005 0 0 -4.8e-05</pose>
+        <scale>1 1 1</scale>
+        <link name='base_link'>
+          <pose>-0.049908 -0.021226 0.0005 0 0 -4.8e-05</pose>
+          <velocity>2e-06 -4e-06 0.002156 0.003578 0.003513 0</velocity>
+          <acceleration>0.002221 -0.000691 4.30234 0.961155 0.77641 -3.3e-05</acceleration>
+          <wrench>0.003521 -0.001095 6.81916 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='ground_plane'>
+        <pose>0 0 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>0 0 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <light name='sun'>
+        <pose>0 0 10 0 -0 0</pose>
+      </light>
+      <light name='user_point_light_0'>
+        <pose>-0.178995 -8.02798 1 0 -0 0</pose>
+      </light>
+    </state>
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose>0.779748 0.927276 5.65334 -0 1.34579 -3.13538</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
+    <light name='user_point_light_0' type='point'>
+      <pose>-0.178995 -8.02798 1 0 -0 0</pose>
+      <diffuse>0.5 0.5 0.5 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>20</range>
+        <constant>0.5</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <cast_shadows>0</cast_shadows>
+      <direction>0 0 -1</direction>
+      <spot>
+        <inner_angle>0</inner_angle>
+        <outer_angle>0</outer_angle>
+        <falloff>0</falloff>
+      </spot>
+    </light>
     <model name='cam_bot'>
-      <static>1</static>
       <link name='base_link'>
-        <pose frame=''>0 0 0 0 -0 0</pose>
+        <pose>0 0 0 0 -0 0</pose>
         <inertial>
-          <pose frame=''>0 0 0 0 -0 0</pose>
+          <pose>0 0 0 0 -0 0</pose>
           <mass>1.58499</mass>
           <inertia>
             <ixx>0.01042</ixx>
@@ -101,11 +162,11 @@
           </inertia>
         </inertial>
         <collision name='base_link_collision'>
-          <pose frame=''>0 0 0 0 -0 0</pose>
+          <pose>0 0 0 0 -0 0</pose>
           <geometry>
             <mesh>
               <scale>1 1 1</scale>
-              <uri>model://flipkart_round_arena/material/arena_one.dae</uri>
+              <uri>model://flipkart_round_one/material/final_arena_aruco.dae</uri>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
@@ -123,11 +184,11 @@
           </surface>
         </collision>
         <visual name='base_link_visual'>
-          <pose frame=''>0 0 0 0 -0 0</pose>
+          <pose>0 0 0 0 -0 0</pose>
           <geometry>
             <mesh>
               <scale>1 1 1</scale>
-              <uri>model://flipkart_round_arena/material/arena_one.dae</uri>
+              <uri>model://flipkart_round_one/material/final_arena_aruco.dae</uri>
             </mesh>
           </geometry>
         </visual>
@@ -166,65 +227,13 @@
             <distortionT1>0.0</distortionT1>
             <distortionT2>0.0</distortionT2>
           </plugin>
-          <pose frame=''>0 0 5 0.000403 1.57059 -1.57059</pose>
+          <pose>0 0 5 0.000403 1.57059 -1.57059</pose>
         </sensor>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>0.008263 -0.008187 0 0 -0 0</pose>
+      <pose>-0.050025 -0.02057 0 0 -0 0</pose>
     </model>
-    <state world_name='default'>
-      <sim_time>262 755000000</sim_time>
-      <real_time>228 447730966</real_time>
-      <wall_time>1626205269 714092638</wall_time>
-      <iterations>180602</iterations>
-      <model name='cam_bot'>
-        <pose frame=''>-0.03499 -0.013569 0.002466 5.7e-05 -5.5e-05 -0.000974</pose>
-        <scale>1 1 1</scale>
-        <link name='base_link'>
-          <pose frame=''>-0.03499 -0.013569 0.002466 5.7e-05 -5.5e-05 -0.000974</pose>
-          <velocity>7e-06 8e-05 -0.008484 0.048182 -0.041936 2.1e-05</velocity>
-          <acceleration>-0.035367 -0.041054 1.21543 -2.30524 -0.43987 0.033706</acceleration>
-          <wrench>-0.056056 -0.06507 1.92644 0 -0 0</wrench>
-        </link>
-      </model>
-      <model name='ground_plane'>
-        <pose frame=''>0 0 0 0 -0 0</pose>
-        <scale>1 1 1</scale>
-        <link name='link'>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-          <velocity>0 0 0 0 -0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
-          <wrench>0 0 0 0 -0 0</wrench>
-        </link>
-      </model>
-      <light name='sun'>
-        <pose frame=''>0 0 10 0 -0 0</pose>
-      </light>
-      <light name='user_point_light_0'>
-        <pose frame=''>0 0 10 0 -0 0</pose>
-      </light>
-    </state>
-    <gui fullscreen='0'>
-      <camera name='user_camera'>
-        <pose frame=''>0.235159 5.21761 1.58045 0 0.236544 -1.52336</pose>
-        <view_controller>orbit</view_controller>
-        <projection_type>perspective</projection_type>
-      </camera>
-    </gui>
-    <light name='user_point_light_0' type='point'>
-      <pose frame=''>-0.178995 -8.02798 1 0 -0 0</pose>
-      <diffuse>0.5 0.5 0.5 1</diffuse>
-      <specular>0.1 0.1 0.1 1</specular>
-      <attenuation>
-        <range>20</range>
-        <constant>0.5</constant>
-        <linear>0.01</linear>
-        <quadratic>0.001</quadratic>
-      </attenuation>
-      <cast_shadows>0</cast_shadows>
-      <direction>0 0 -1</direction>
-    </light>
   </world>
 </sdf>
