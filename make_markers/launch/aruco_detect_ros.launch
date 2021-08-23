@@ -4,7 +4,7 @@
   <!-- <arg name="camera" default="/usb_cam"/> -->
   <arg name="image" default="/usb_cam/image_raw"/>
   <arg name="transport" default="compressed"/>
-  <arg name="fiducial_len" default="0.54"/>
+  <arg name="fiducial_len" default="0.1"/>
   <arg name="dictionary" default="7"/>
   <arg name="do_pose_estimation" default="true"/>
   <arg name="ignore_fiducials" default="" />
@@ -24,5 +24,5 @@
     <!-- <remap from="/camera_info" to="/usb_cam/camera_info"/> -->
     <remap from="/camera_info" to="/camera/camera_info"/>
   </node>
-  <node pkg="rviz" type="rviz" name="markers_extrinsic" args="-d $(find make_markers)/rviz/sim_config.rviz"/>
+  <!-- <node pkg="rviz" type="rviz" name="markers_extrinsic" args="-d $(find make_markers)/rviz/sim_config.rviz"/> -->
 </launch>

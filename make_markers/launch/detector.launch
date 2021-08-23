@@ -3,41 +3,6 @@
     <arg name="use_rviz" default="True" />
     <arg name="use_camera" default="True" />
     <arg name="use_bag" default="False" />
-    <!-- <arg name="bag_name" default="640x480_logitech_aruco3_compressed.orig" /> -->
-
-    <arg name="image_width" default="640" /> <!-- 640, 1920 -->
-    <!-- <arg name="image_width" default="1920" /> 640, 1920 -->
-    <!-- <arg name="image_height" default="1080" /> 480, 1080 -->
-    <arg name="image_height" default="480" /> <!-- 480, 1080 -->
-    <arg name="camera" default="/usb_cam/image_raw" />
-    <arg name="camera_info" default="/camera/camera_info" />
-    <arg name="tf_prefix" default="marker_id" />
-    <arg name="show_detections" default="true" />
-    <arg name="marker_size" default="0.05" doc="length of the physical marker's side in meters"/>
-    <arg name="dictionary_name" default="DICT_4X4_1000" />
-    <arg name="blur_window_size" default="7" />
-    <arg name="num_detected" default="25" /><!-- 0: do not use it, -->
-    <arg name="min_prec_value" default="50" /><!-- 0: do not use it, 80 means aruco marker must be detected in 80% of the last pics to be displayed -->
- 
-
-
-   <!--   usb_cam node, as pixel_format use yuyv or mjpeg -->
-   <group if="$(arg use_camera)" >
-  <node name="usb_cam" pkg="usb_cam" type="usb_cam_node" output="screen">
-    <param name="video_device" value="/dev/video3" />
-    <param name="image_width" value="$(arg image_width)" />
-    <param name="image_height" value="$(arg image_height)" />
-    <param name="pixel_format" value="yuyv" />
-    <param name="camera_frame_id" value="camera_link" />
-    <param name="io_method" value="mmap"/>
-    <!-- <param name="camera_frame_id" value="camera_link" /> -->
-  </node>
-  </group>
-
-    <!-- start bag file in a loop -->
-    <!-- <group if="$(arg use_bag)" >
-        <node pkg="rosbag" type="play" name="rosbag_play" args="-l $(find aruco_detector_ocv)/data/$(arg bag_name).bag" />
-    </group> -->
 
 
 <!-- 640x480 -->
@@ -45,11 +10,11 @@
 <node  name="camera_info" pkg="rostopic" type="rostopic"
   args="pub /camera/camera_info sensor_msgs/CameraInfo
  '{header: {seq: 0, stamp: {secs: 0, nsecs: 0}, frame_id: 'camera_link'},
-  height: 480, width: 640, distortion_model: 'plumb_bob',
-  D: [0.08269409104660361, -0.16570658726478218, 0.0013173694798400222, -0.0014110498528553663, 0.0],
-  K: [519.734208757597, 0.0, 302.85096428096654, 0.0, 520.5923676830233, 252.63525359615707, 0.0, 0.0, 1.0],
+  height: 720, width: 1280, distortion_model: 'plumb_bob',
+  D: [-0.002503, -0.041349, -0.001520, -0.001615, 0.000000],
+  K: [486.10527, 0.0 , 318.82682, 0.0 , 489.56034, 187.99702, 0.0, 0.0, 1.0],
   R: [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0],
-  P: [523.3435668945312, 0.0, 301.43917490757667, 0.0, 0.0, 526.1812744140625, 253.1422791119403, 0.0, 0.0, 0.0, 1.0, 0.0],
+  P: [480.8934 , 0.0, 317.21083, 0.0, 0.0, 485.96143, 186.48484, 0.0, 0.0, 0.0, 1.0, 0.0],
   binning_x: 0, binning_y: 0,
   roi: {x_offset: 0, y_offset: 0, height: 480, width: 640, do_rectify: false}}' -r 2"/>  
     <!-- </group> -->
@@ -80,6 +45,6 @@
     </node> -->
 
    <group if="$(arg use_rviz)" >
-        <node pkg="rviz" type="rviz" name="markers_extrinsic" args="-d $(find make_markers)/rviz/sim_config.rviz"/>
+        <node pkg="rviz" type="rviz" name="dme_markers_extrinsic" args="-d $(find make_markers)/rviz/sim_config.rviz"/>
     </group>
 </launch>
