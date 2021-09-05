@@ -90,18 +90,18 @@
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
     <state world_name='default'>
-      <sim_time>188 729000000</sim_time>
-      <real_time>189 472374222</real_time>
-      <wall_time>1629574964 575639679</wall_time>
-      <iterations>188729</iterations>
+      <sim_time>276 450000000</sim_time>
+      <real_time>36 758517642</real_time>
+      <wall_time>1630855726 892914677</wall_time>
+      <iterations>36598</iterations>
       <model name='cam_bot'>
-        <pose>-0.049908 -0.021226 0.0005 0 0 -4.8e-05</pose>
+        <pose>0.069335 -0.021497 0.000498 -4e-06 -3e-06 -6.7e-05</pose>
         <scale>1 1 1</scale>
         <link name='base_link'>
-          <pose>-0.049908 -0.021226 0.0005 0 0 -4.8e-05</pose>
-          <velocity>2e-06 -4e-06 0.002156 0.003578 0.003513 0</velocity>
-          <acceleration>0.002221 -0.000691 4.30234 0.961155 0.77641 -3.3e-05</acceleration>
-          <wrench>0.003521 -0.001095 6.81916 0 -0 0</wrench>
+          <pose>0.069335 -0.021497 0.000498 -4e-06 -3e-06 -6.7e-05</pose>
+          <velocity>-0 -3e-06 -0.002146 -0.003667 -0.003546 0</velocity>
+          <acceleration>-0.003812 0.001977 -9.51599 1.85202 0.747891 3.14132</acceleration>
+          <wrench>-0.006042 0.003133 -15.0827 0 -0 0</wrench>
         </link>
       </model>
       <model name='ground_plane'>
@@ -118,12 +118,12 @@
         <pose>0 0 10 0 -0 0</pose>
       </light>
       <light name='user_point_light_0'>
-        <pose>-0.178995 -8.02798 1 0 -0 0</pose>
+        <pose>0 0 3 0 -0 0</pose>
       </light>
     </state>
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose>0.779748 0.927276 5.65334 -0 1.34579 -3.13538</pose>
+        <pose>0.554432 0.978132 5.91839 3.5e-05 1.5698 -1.62335</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
@@ -147,6 +147,7 @@
       </spot>
     </light>
     <model name='cam_bot'>
+     <static>true</static>
       <link name='base_link'>
         <pose>0 0 0 0 -0 0</pose>
         <inertial>
@@ -199,8 +200,8 @@
           <camera name='head'>
             <horizontal_fov>1.39626</horizontal_fov>
             <image>
-              <width>640</width>
-              <height>480</height>
+              <width>960</width>
+              <height>720</height>
               <format>R8G8B8</format>
             </image>
             <clip>
@@ -227,7 +228,7 @@
             <distortionT1>0.0</distortionT1>
             <distortionT2>0.0</distortionT2>
           </plugin>
-          <pose>0 0 5 0.000403 1.57059 -1.57059</pose>
+          <pose>-0.5 0 2.5 0.000403 1.57059 0</pose>
         </sensor>
         <self_collide>0</self_collide>
         <enable_wind>0</enable_wind>
