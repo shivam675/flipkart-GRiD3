@@ -13,7 +13,7 @@
 
 <link name="base_bot_link">
 <inertial>
-        <mass value="1"/>
+        <mass value="15"/>
         <origin xyz="0.0 0.0 0.0"/>
         <inertia
           ixx="0.01042" ixy="0.001177" ixz="-0.0008871"
@@ -127,9 +127,6 @@
         <geometry>
           <mesh filename="package://rover_description/meshes/stl/tray.stl"/>
         </geometry>
-        <!-- <material name="RED"> -->
-          <!-- <color rgba="1.0 0.0 0.0 1.0"/> -->
-        <!-- </material> -->
       </visual>
       <collision>
         <geometry>
@@ -141,14 +138,12 @@
 
 
 <!-- CAster Integrated -->
-
+<!-- 
 
 <joint name="caster_front_joint" type="fixed">
     <parent link="base_bot_link" />
     <child link="caster_front"/>
     <origin xyz="0.06 0 -0.018" rpy="0.0 0.0 0.0" />
-    <!-- <axis xyz="0 1 0" /> -->
-    <!-- <limit lower="-3.142" upper="3.142" effort="150.0" velocity="1.5"/> -->
 </joint>
 
 <link name="caster_front">
@@ -164,9 +159,6 @@
         <geometry>
           <mesh filename="package://rover_description/meshes/stl/caster_dummy.stl"/>
         </geometry>
-        <!-- <material name="RED"> -->
-          <!-- <color rgba="1.0 0.0 0.0 1.0"/> -->
-        <!-- </material> -->
       </visual>
       <collision>
         <geometry>
@@ -193,8 +185,6 @@
     <parent link="base_bot_link" />
     <child link="caster_rear"/>
     <origin xyz="-0.06 0 -0.018" rpy="0.0 0.0 0" />
-    <!-- <axis xyz="0 1 0" /> -->
-    <!-- <limit lower="-3.142" upper="3.142" effort="150.0" velocity="1.5"/> -->
 </joint>
 
 <link name="caster_rear">
@@ -210,9 +200,6 @@
         <geometry>
           <mesh filename="package://rover_description/meshes/stl/caster_dummy.stl"/>
         </geometry>
-        <!-- <material name="RED"> -->
-          <!-- <color rgba="1.0 0.0 0.0 1.0"/> -->
-        <!-- </material> -->
       </visual>
       <collision>
         <geometry>
@@ -230,25 +217,27 @@
       </surface>
       </collision>
 </link>
+ -->
 
 
 
 
 
 
-<!-- Wheels of the bot -->
 
 
 
-<joint name="right_wheel_joint" type="continuous">
+
+
+<joint name="right_wheel_front_joint" type="continuous">
     <parent link="base_bot_link" />
-    <child link="wheel_right"/>
-    <origin xyz="0 -0.06 -0.007" rpy="0.0 0.0 0.0" />
-    <axis xyz="0 1 0" />
+    <child link="wheel_right_front"/>
+    <origin xyz="0.05 -0.07 -0.007" rpy="0.0 0.0 0.0" />
+    <axis xyz="0 1 0"/>
     <limit lower="-3.142" upper="3.142" effort="150.0" velocity="1.5"/>
 </joint>
 
-<link name="wheel_right">
+<link name="wheel_right_front">
 <inertial>
         <mass value="0.3"/>
         <origin xyz="0.0 0.0 0.0"/>
@@ -276,15 +265,99 @@
 
 
 
-<joint name="left_wheel_joint" type="continuous">
+<joint name="left_wheel_front_joint" type="continuous">
     <parent link="base_bot_link" />
-    <child link="wheel_left"/>
-    <origin xyz="0 0.06 -0.007" rpy="0.0 0.0 0.0" />
+    <child link="wheel_left_front"/>
+    <origin xyz="0.05 0.07 -0.007" rpy="0.0 0.0 0.0" />
     <axis xyz="0 1 0" />
     <limit lower="-3.142" upper="3.142" effort="150.0" velocity="1.5"/>
 </joint>
 
-<link name="wheel_left">
+<link name="wheel_left_front">
+<inertial>
+        <mass value="0.3"/>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 3.142" />
+        <inertia
+          ixx="0.01042" ixy="0.001177" ixz="-0.0008871"
+          iyy="0.01045" iyz="0.0002226"
+          izz="0.01817"/>
+      </inertial>
+    <visual>
+        <geometry>
+          <mesh filename="package://rover_description/meshes/stl/wheel.stl"/>
+        </geometry>
+        <!-- <material name="RED"> -->
+          <!-- <color rgba="1.0 0.0 0.0 1.0"/> -->
+        <!-- </material> -->
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://rover_description/meshes/stl/wheel.stl"/>
+        </geometry>
+      </collision>
+</link>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Wheels of the bot -->
+
+
+
+<joint name="right_wheel_rear_joint" type="continuous">
+    <parent link="base_bot_link" />
+    <child link="wheel_right_rear"/>
+    <origin xyz="-0.05 -0.07 -0.007" rpy="0.0 0.0 0.0" />
+    <axis xyz="0 1 0" />
+    <limit lower="-3.142" upper="3.142" effort="150.0" velocity="1.5"/>
+</joint>
+
+<link name="wheel_right_rear">
+<inertial>
+        <mass value="0.3"/>
+        <origin xyz="0.0 0.0 0.0"/>
+        <inertia
+          ixx="0.01042" ixy="0.001177" ixz="-0.0008871"
+          iyy="0.01045" iyz="0.0002226"
+          izz="0.01817"/>
+      </inertial>
+    <visual>
+        <geometry>
+          <mesh filename="package://rover_description/meshes/stl/wheel.stl"/>
+        </geometry>
+        <!-- <material name="RED"> -->
+          <!-- <color rgba="1.0 0.0 0.0 1.0"/> -->
+        <!-- </material> -->
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://rover_description/meshes/stl/wheel.stl"/>
+        </geometry>
+      </collision>
+</link>
+
+
+
+
+
+<joint name="left_wheel_rear_joint" type="continuous">
+    <parent link="base_bot_link" />
+    <child link="wheel_left_rear"/>
+    <origin xyz="-0.05 0.07 -0.007" rpy="0.0 0.0 0.0" />
+    <axis xyz="0 1 0" />
+    <limit lower="-3.142" upper="3.142" effort="150.0" velocity="1.5"/>
+</joint>
+
+<link name="wheel_left_rear">
 <inertial>
         <mass value="0.3"/>
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 3.142" />
@@ -314,19 +387,24 @@
 <!-- GAZEBO -->
 
 <gazebo>
-    <plugin filename="libgazebo_ros_diff_drive.so" name="differential_drive_controller">
-      <alwaysOn>true</alwaysOn>
-      <updateRate>20</updateRate>
-      <leftJoint>left_wheel_joint</leftJoint>
-      <rightJoint>right_wheel_joint</rightJoint>
-      <wheelSeparation>0.4</wheelSeparation>
-      <wheelDiameter>0.2</wheelDiameter>
-      <torque>0.1</torque>
+    <plugin name="skid_steer_drive_controller" filename="libgazebo_ros_skid_steer_drive.so">
+      <updateRate>60.0</updateRate>
+      <leftFrontJoint>left_wheel_front_joint</leftFrontJoint>  
+      <rightFrontJoint>right_wheel_front_joint</rightFrontJoint>
+      <leftRearJoint>left_wheel_rear_joint</leftRearJoint>
+      <rightRearJoint>right_wheel_rear_joint</rightRearJoint>
+      <wheelSeparation>0.140</wheelSeparation>
+      <wheelDiameter>0.03</wheelDiameter>
+      <robotBaseFrame>base_bot_link</robotBaseFrame>
+      <torque>5</torque>
+      <topicName>cmd_vel</topicName>
+      
       <commandTopic>cmd_vel</commandTopic>
       <odometryTopic>odom</odometryTopic>
       <odometryFrame>odom</odometryFrame>
-      <robotBaseFrame>base_bot_link</robotBaseFrame>
-    </plugin>
+      
+      <broadcastTF>true</broadcastTF>
+   </plugin>
   </gazebo>
 
 
@@ -334,7 +412,7 @@
     <sensor type="ray" name="head_rplidar_sensor">
       <pose>0 0 0 0 0 0</pose>
       <visualize>true</visualize>
-      <update_rate>40</update_rate>
+      <update_rate>60</update_rate>
       <ray>
         <scan>
           <horizontal>
