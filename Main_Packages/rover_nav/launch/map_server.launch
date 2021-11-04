@@ -1,0 +1,14 @@
+<launch>
+
+
+<node name="rover_nav_img_pub" pkg="rover_nav" type="img_pub.py"/>
+<node name="rover_nav_map" pkg="rover_nav" type="map_server.py"/>
+
+
+    <arg name="rviz_conf" default="$(find rover_nav)/rviz/default.rviz"/>
+    <node type="rviz" name="rviz" pkg="rviz" args="-d $(arg rviz_conf)" /> 
+
+
+<node pkg="tf2_ros" type="static_transform_publisher" name="map_to_world" args="0 0 0 -1.571 0 0 map world" />
+
+</launch>

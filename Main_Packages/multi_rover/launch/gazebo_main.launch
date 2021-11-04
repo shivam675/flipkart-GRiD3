@@ -32,6 +32,8 @@
   <!-- include our robots -->
   <!-- <include file="$(find multi_rover)/launch/multi_rover.launch"/> -->
   <include file="$(find multi_rover)/launch/multi_rover_aruco.launch"/>
+  <include file="$(find multi_rover)/launch/static_transform.launch"/>
   <!-- <include file="$(find make_markers)/launch/aruco_detect_ros.launch"/> -->
   <include file="$(find rover_description)/launch/robo_cam.launch"/>
+  
 </launch>

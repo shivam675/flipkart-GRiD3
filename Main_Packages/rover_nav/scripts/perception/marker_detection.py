@@ -55,6 +55,7 @@ class image_proc():
 	def get_info(self):
 		self.detection_dict = detect_ArUco(self.img)							
 		self.angle_dict = Calculate_orientation_in_degree(self.detection_dict)
+		print(self.detection_dict)
 		self.publish_detection_image()
 
 	def publish_detection_image(self):

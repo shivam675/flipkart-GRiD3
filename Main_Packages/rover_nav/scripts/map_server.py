@@ -13,7 +13,7 @@ class Image_to_map:
     def __init__(self):
         rospy.init_node('Map_ServEr', anonymous=True)
         rospy.sleep(1)
-        self.image_sub = rospy.Subscriber('/usb_cam/image_raw', Image, self.img_callback)
+        self.image_sub = rospy.Subscriber('/temp_topic', Image, self.img_callback)
 
         self.map_publihser = rospy.Publisher('/map', OccupancyGrid, queue_size=4)
         self.img_publihser = rospy.Publisher('/map_img', Image, queue_size=4)
@@ -32,8 +32,8 @@ class Image_to_map:
         # corodinates
         
         # thresholds 
-        TAMin = rospy.get_param('thresholding_area_min', default=80)
-        TAMax = rospy.get_param('thresholding_area_max', default=2000)
+        TAMin = rospy.get_param('thresholding_area_min', default=100)
+        TAMax = rospy.get_param('thresholding_area_max', default=15000)
 
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         blur = cv2.bilateralFilter(gray, 13, 73, 95) 
@@ -100,8 +100,8 @@ class Image_to_map:
 
         img_m.info.resolution = 0.005
 
-        img_m.info.origin.position.x = -1.6
-        img_m.info.origin.position.y = -1.2
+        img_m.info.origin.position.x = -2.85
+        img_m.info.origin.position.y = -2.197
 
         temp_2 = gray.flatten()
         temp_2 = temp_2.tolist()
@@ -111,7 +111,7 @@ class Image_to_map:
         # print(np.array(cords))
         # cv2.waitKey(0)
         # cv2.destroyAllWindows()
-        print(self.cords[10])
+        # print(self.cords[10])
         self.cords = []
 
 if __name__ == '__main__':

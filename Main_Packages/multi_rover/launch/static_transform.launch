@@ -1,0 +1,7 @@
+<launch>
+<node pkg="tf2_ros" type="static_transform_publisher" name="robot_one" args="0 0 0 0 0 0 1 world robot1/odom" />
+<node pkg="tf2_ros" type="static_transform_publisher" name="robot_two" args="0 0 0 0 0 0 1 world robot2/odom" />
+<node pkg="tf2_ros" type="static_transform_publisher" name="robot_three" args="0 0 0 0 0 0 1 world robot3/odom" />
+<node pkg="tf2_ros" type="static_transform_publisher" name="robot_four" args="0 0 0 0 0 0 1 world robot4/odom" />
+<!-- <node pkg="tf2_ros" type="static_transform_publisher" name="link1_broadcaster" args="1 0 0 0 0 0 1 link1_parent link1" /> -->
+</launch>
