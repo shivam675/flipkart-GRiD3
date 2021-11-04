@@ -1,0 +1,67 @@
+<launch>
+  <!-- No namespace here as we will share this description.
+       Access with slash at the beginning -->
+  <!-- <param name="robot_description_1" command="$(find xacro)/xacro $(find rover_description)/urdf/all_4_rovers/rover_1.xacro" />
+  <param name="robot_description_2" command="$(find xacro)/xacro $(find rover_description)/urdf/all_4_rovers/rover_2.xacro" />
+  <param name="robot_description_3" command="$(find xacro)/xacro $(find rover_description)/urdf/all_4_rovers/rover_3.xacro" />
+  <param name="robot_description_4" command="$(find xacro)/xacro $(find rover_description)/urdf/all_4_rovers/rover_3.xacro" /> -->
+  <param name="robot_description" command="$(find xacro)/xacro $(find rover_description)/urdf/rover.xacro" />
+  
+    <!--  -->
+
+  <!-- BEGIN ROBOT 1-->
+  <group ns="robot1">
+    <param name="tf_prefix" value="robot1_" />
+    <include file="$(find multi_rover)/launch/single_rover.launch" >
+
+    <!-- <node name="gazebo_ros" pkg="" type="" -->
+      <arg name="init_pose" value="-x -0.387 -y -1.291 -z 0.01 -R 0 -P 0 -Y 1.571" />
+      <arg name="robot_name"  value="Robot1" />
+     
+    <node pkg="joint_state_publisher" type="joint_state_publisher"  name="$(arg robot_name)_joint_state_publisher" output="screen"/>
+    <!-- <node pkg="$(arg robot_name)robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen"/> -->
+    </include>
+  </group>
+
+  
+
+  <!-- BEGIN ROBOT 2-->
+  <group ns="robot2">
+    <param name="tf_prefix" value="robot2_" />
+    <include file="$(find multi_rover)/launch/single_rover.launch" >
+    <!-- <node name="gazebo_ros" pkg="" type="" -->
+      <arg name="init_pose" value="-x -0.2124 -y -1.291 -z 0.01 -R 0 -P 0 -Y 1.571" />
+      <arg name="robot_name"  value="Robot2" />
+      
+    <!-- <node pkg="$(arg robot_name)robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen"/> -->
+    <node pkg="joint_state_publisher" type="joint_state_publisher"  name="$(arg robot_name)_joint_state_publisher" output="screen"/>
+    </include>
+
+  </group>
+
+  <!-- BEGIN ROBOT 3-->
+  <group ns="robot3">
+    <param name="tf_prefix" value="robot3_" />
+    <include file="$(find multi_rover)/launch/single_rover.launch" >
+      <arg name="init_pose" value="-x 0.217 -y -1.291 -z 0.01 -R 0 -P 0 -Y 1.571" />
+      <arg name="robot_name"  value="Robot3" />
+     
+    
+    <!-- <node pkg="$(arg robot_name)robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen"/> -->
+    <node pkg="joint_state_publisher" type="joint_state_publisher"  name="$(arg robot_name)_joint_state_publisher" output="screen"/>
+    </include>
+  </group>
+
+<!-- BEGIN ROBOT 4-->
+    <group ns="robot4">
+    <param name="tf_prefix" value="robot4_" />
+    <include file="$(find multi_rover)/launch/single_rover.launch" >
+      <arg name="init_pose" value="-x 0.3765 -y -1.291 -z 0.01 -R 0 -P 0 -Y 1.571" />
+      <arg name="robot_name"  value="Robot4" />
+
+    <!-- <node pkg="$(arg robot_name)robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen"/> -->
+    <node pkg="joint_state_publisher" type="joint_state_publisher"  name="$(arg robot_name)_joint_state_publisher" output="screen"/>
+    </include>
+  </group>
+
+</launch>

@@ -1,0 +1,21 @@
+<launch>
+
+<param name="cam_description" command="$(find xacro)/xacro --inorder '$(find rover_description)/urdf/birds_eye_cam.xacro'"/>
+
+<node name="spawn_cam_model" pkg="gazebo_ros" type="spawn_model"
+     args="-x 0 -y 0 -z 0 -urdf -param /cam_description -model cam_bot"
+     respawn="false" output="screen" />
+
+
+<node pkg="robot_state_publisher" type="robot_state_publisher" name="cam_state_publisher" respawn="false" output="screen">
+  <remap from="robot_description" to="cam_description" />
+  <remap from="joint_states" to="cam_description_states" />
+</node>
+
+
+<node name="cam_joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" respawn="false" output="screen">
+<remap from="robot_description" to="cam_description" />
+<remap from="joint_states" to="cam_description_states" />
+</node>
+
+</launch>

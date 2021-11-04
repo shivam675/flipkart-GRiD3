@@ -1,0 +1,23 @@
+digraph G {
+"robot1_/odom" -> "robot1_/base_link"[label=" Broadcaster: /gazebo\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"robot1_/base_link" -> "robot1_/caster_front"[label=" Broadcaster: /robot1/Robot1robot_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"robot1_/base_link" -> "robot1_/caster_rear"[label=" Broadcaster: /robot1/Robot1robot_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"robot1_/base_link" -> "robot1_/upper_plate"[label=" Broadcaster: /robot1/Robot1robot_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"robot4_/odom" -> "robot4_/base_link"[label=" Broadcaster: /gazebo\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"robot4_/base_link" -> "robot4_/caster_front"[label=" Broadcaster: /robot4/Robot4robot_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"robot4_/base_link" -> "robot4_/caster_rear"[label=" Broadcaster: /robot4/Robot4robot_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"robot4_/base_link" -> "robot4_/upper_plate"[label=" Broadcaster: /robot4/Robot4robot_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"robot3_/odom" -> "robot3_/base_link"[label=" Broadcaster: /gazebo\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"robot3_/base_link" -> "robot3_/caster_front"[label=" Broadcaster: /robot3/Robot3robot_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"robot3_/base_link" -> "robot3_/caster_rear"[label=" Broadcaster: /robot3/Robot3robot_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"robot3_/base_link" -> "robot3_/upper_plate"[label=" Broadcaster: /robot3/Robot3robot_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"robot2_/odom" -> "robot2_/base_link"[label=" Broadcaster: /gazebo\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"robot2_/base_link" -> "robot2_/caster_front"[label=" Broadcaster: /robot2/Robot2robot_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"robot2_/base_link" -> "robot2_/caster_rear"[label=" Broadcaster: /robot2/Robot2robot_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"robot2_/base_link" -> "robot2_/upper_plate"[label=" Broadcaster: /robot2/Robot2robot_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+"world" -> "camera_link"[label=" Broadcaster: /cam_state_publisher\nAverage rate: 10000.0\nBuffer length: 0.0\nMost recent transform: 0.0\nOldest transform: 0.0\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 118.707"[ shape=plaintext ] ;
+}->"world";
+}
