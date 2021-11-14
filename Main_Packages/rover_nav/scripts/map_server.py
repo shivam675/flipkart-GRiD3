@@ -32,7 +32,7 @@ class Image_to_map:
         # corodinates
         
         # thresholds 
-        TAMin = rospy.get_param('thresholding_area_min', default=100)
+        TAMin = rospy.get_param('thresholding_area_min', default=5000)
         TAMax = rospy.get_param('thresholding_area_max', default=15000)
 
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -98,10 +98,10 @@ class Image_to_map:
         img_m.info.width = w
     
 
-        img_m.info.resolution = 0.005
+        img_m.info.resolution = 0.0023
 
-        img_m.info.origin.position.x = -2.85
-        img_m.info.origin.position.y = -2.197
+        img_m.info.origin.position.x = -1.311
+        img_m.info.origin.position.y = -1.01085
 
         temp_2 = gray.flatten()
         temp_2 = temp_2.tolist()

@@ -15,7 +15,7 @@ import rospkg
 
 rp = rospkg.RosPack()
 path = rp.get_path('rover_nav')
-map_path = path + '/scripts/map.png'
+map_path = path + '/scripts/round_2_map.png'
 
 
 
