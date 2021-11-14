@@ -37,11 +37,26 @@ git clone --recurse-submodules https://github.com/shivam675/flipkart-GRiD3.git
 - 8 GB 1666 MHz RAM
 
 # Tested on System config 2:
-- Hardware: Ryzen 5 AMD64
+- Hardware: Ryzen 7 AMD64
 - ROS: Melodic
-- OS: Ubuntu 18.04 LTS
-- processor arch: 4-core AMD64
-- 8 GB 3200 MHz RAM 
+- OS: Ubuntu 20.04 LTS
+- processor arch: 8-core AMD64
+- 16 GB 3200 MHz RAM 
+
+
+
+### How to run task 2:
+1. Run **sim.launch** file | Terminal 1 (all_nodes): `roslaunch gods_eye activate_sim.launch`
+<!-- 2. Run **aruco_detect_ros.launch** fine | Terminal 2 (aruco node): `roslaunch make_markers aruco_detect_ros.launch` -->
+
+## SIM  
+![](./task_2_sim.png)
+
+
+## RVIZ
+
+![](./task_2.png)
+
 
 
 # Done Part:
