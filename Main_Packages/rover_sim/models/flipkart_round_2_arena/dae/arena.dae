@@ -3,10 +3,10 @@
   <asset>
     <contributor>
       <author>Blender User</author>
-      <authoring_tool>Blender 2.93.5 commit date:2021-10-05, commit time:12:04, hash:a791bdabd0b2</authoring_tool>
+      <authoring_tool>Blender 2.90.1 commit date:2020-09-23, commit time:06:43, hash:3e85bb34d0d7</authoring_tool>
     </contributor>
-    <created>2021-10-30T18:10:14</created>
-    <modified>2021-10-30T18:10:14</modified>
+    <created>2021-11-26T22:47:45</created>
+    <modified>2021-11-26T22:47:45</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
@@ -120,8 +120,38 @@
         </technique>
       </profile_COMMON>
     </effect>
+    <effect id="Material_003-effect">
+      <profile_COMMON>
+        <newparam sid="_0_tag_png-surface">
+          <surface type="2D">
+            <init_from>_0_tag_png</init_from>
+          </surface>
+        </newparam>
+        <newparam sid="_0_tag_png-sampler">
+          <sampler2D>
+            <source>_0_tag_png-surface</source>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <lambert>
+            <emission>
+              <color sid="emission">0 0 0 1</color>
+            </emission>
+            <diffuse>
+              <texture texture="_0_tag_png-sampler" texcoord="UVMap"/>
+            </diffuse>
+            <index_of_refraction>
+              <float sid="ior">1.45</float>
+            </index_of_refraction>
+          </lambert>
+        </technique>
+      </profile_COMMON>
+    </effect>
   </library_effects>
   <library_images>
+    <image id="_0_tag_png" name="_0_tag_png">
+      <init_from>10_tag.png</init_from>
+    </image>
     <image id="material_png" name="material_png">
       <init_from>material.png</init_from>
     </image>
@@ -133,14 +163,17 @@
     <material id="Material_001-material" name="Material.001">
       <instance_effect url="#Material_001-effect"/>
     </material>
+    <material id="Material_003-material" name="Material.003">
+      <instance_effect url="#Material_003-effect"/>
+    </material>
   </library_materials>
   <library_geometries>
     <geometry id="Plane_001-mesh" name="Plane.001">
       <mesh>
         <source id="Plane_001-mesh-positions">
-          <float_array id="Plane_001-mesh-positions-array" count="24">-0.1654605 -0.5060673 0 0.1654605 -0.5060673 0 -0.1654605 0.5060673 0 0.1654605 0.5060673 0 -0.1653653 1.0668 0 -2.298965 1.0668 0 -0.165365 -1.0668 0 -2.298965 -1.0668 0</float_array>
+          <float_array id="Plane_001-mesh-positions-array" count="36">-0.1654605 -0.5060673 0 0.1654605 -0.5060673 0 -0.1654605 0.5060673 0 0.1654605 0.5060673 0 -0.1653653 1.0668 0 -2.298965 1.0668 0 -0.165365 -1.0668 0 -2.298965 -1.0668 0 -1.302165 -0.06999999 0.001036405 -1.162165 -0.06999999 0.001036405 -1.302165 0.06999999 0.001036405 -1.162165 0.06999999 0.001036405</float_array>
           <technique_common>
-            <accessor source="#Plane_001-mesh-positions-array" count="8" stride="3">
+            <accessor source="#Plane_001-mesh-positions-array" count="12" stride="3">
               <param name="X" type="float"/>
               <param name="Y" type="float"/>
               <param name="Z" type="float"/>
@@ -158,9 +191,9 @@
           </technique_common>
         </source>
         <source id="Plane_001-mesh-map-0">
-          <float_array id="Plane_001-mesh-map-0-array" count="24">1 0 0 1 0 0 1 0 0 1 0 0 1 0 1 1 0 1 1 0 1 1 0 1</float_array>
+          <float_array id="Plane_001-mesh-map-0-array" count="36">1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 1 1 0 1 1 0 1 1 0 1 1 0 1 1 0 1</float_array>
           <technique_common>
-            <accessor source="#Plane_001-mesh-map-0-array" count="12" stride="2">
+            <accessor source="#Plane_001-mesh-map-0-array" count="18" stride="2">
               <param name="S" type="float"/>
               <param name="T" type="float"/>
             </accessor>
@@ -173,13 +206,19 @@
           <input semantic="VERTEX" source="#Plane_001-mesh-vertices" offset="0"/>
           <input semantic="NORMAL" source="#Plane_001-mesh-normals" offset="1"/>
           <input semantic="TEXCOORD" source="#Plane_001-mesh-map-0" offset="2" set="0"/>
-          <p>1 0 0 2 0 1 0 0 2 1 0 6 3 0 7 2 0 8</p>
+          <p>1 0 0 2 0 1 0 0 2 1 0 9 3 0 10 2 0 11</p>
         </triangles>
         <triangles material="Material_001-material" count="2">
           <input semantic="VERTEX" source="#Plane_001-mesh-vertices" offset="0"/>
           <input semantic="NORMAL" source="#Plane_001-mesh-normals" offset="1"/>
           <input semantic="TEXCOORD" source="#Plane_001-mesh-map-0" offset="2" set="0"/>
-          <p>5 0 3 6 0 4 4 0 5 5 0 9 7 0 10 6 0 11</p>
+          <p>5 0 3 6 0 4 4 0 5 5 0 12 7 0 13 6 0 14</p>
+        </triangles>
+        <triangles material="Material_003-material" count="2">
+          <input semantic="VERTEX" source="#Plane_001-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Plane_001-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Plane_001-mesh-map-0" offset="2" set="0"/>
+          <p>9 0 6 10 0 7 8 0 8 9 0 15 11 0 16 10 0 17</p>
         </triangles>
       </mesh>
     </geometry>
@@ -195,6 +234,9 @@
                 <bind_vertex_input semantic="UVMap" input_semantic="TEXCOORD" input_set="0"/>
               </instance_material>
               <instance_material symbol="Material_001-material" target="#Material_001-material">
+                <bind_vertex_input semantic="UVMap" input_semantic="TEXCOORD" input_set="0"/>
+              </instance_material>
+              <instance_material symbol="Material_003-material" target="#Material_003-material">
                 <bind_vertex_input semantic="UVMap" input_semantic="TEXCOORD" input_set="0"/>
               </instance_material>
             </technique_common>
