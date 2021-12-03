@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<robot name="cam_bot" xmlns:xacro="http://ros.org/wiki/xacro">
+
+
+<link name="world" />
+
+<link name="camera_link_twisted">
+<inertial>
+        <mass value="1.584994"/>
+        <origin xyz="0.0 0.0 0.0"/>
+        <inertia
+          ixx="0.01042" ixy="0.001177" ixz="-0.0008871"
+          iyy="0.01045" iyz="0.0002226"
+          izz="0.01817"/>
+      </inertial>
+    <visual>
+        <geometry>
+        <box size="0.001 0.001 0.001" />
+        </geometry>
+      </visual>
+      <collision>
+        <geometry>
+        <box size="0.001 0.001 0.001" />
+        </geometry>
+      </collision>
+</link>
+
+
+<joint name="world_base" type="fixed">
+    <parent link="world" />
+    <child link="camera_link_twisted"/>
+    <origin xyz="0 0.0 2.5" rpy="0 1.571 3.1421" />
+</joint>
+
+
+
+<link name="camera_link">
+<inertial>
+        <mass value="1.584994"/>
+        <origin xyz="0.0 0.0 0.0"/>
+        <inertia
+          ixx="0.01042" ixy="0.001177" ixz="-0.0008871"
+          iyy="0.01045" iyz="0.0002226"
+          izz="0.01817"/>
+      </inertial>
+    <visual>
+        <geometry>
+        <box size="0.001 0.001 0.001" />
+        </geometry>
+      </visual>
+      <collision>
+        <geometry>
+        <box size="0.001 0.001 0.001" />
+        </geometry>
+      </collision>
+</link>
+
+<joint name="camera_base" type="fixed">
+    <parent link="camera_link_twisted" />
+    <child link="camera_link"/>
+    <origin xyz="0 0.0 0" rpy="0 1.571 0" />
+</joint>
+
+
+
+<gazebo reference="camera_link_twisted">
+    <sensor type="camera" name="camera">
+      <update_rate>10</update_rate>
+      <camera name="head">
+        <horizontal_fov>1.3962634</horizontal_fov>
+        <image>
+          <width>1280</width>
+          <height>720</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.02</near>
+          <far>4</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <!-- Noise is sampled independently per pixel on each frame.
+               That pixel's noise value is added to each of its color
+               channels, which at that point lie in the range [0,1]. -->
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+      <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+        <alwaysOn>true</alwaysOn>
+        <updateRate>10.0</updateRate>
+        <cameraName>usb_cam</cameraName>
+        <imageTopicName>image_raw</imageTopicName>
+        <cameraInfoTopicName>/camera/camera_info</cameraInfoTopicName>
+        <frameName>camera_link_twisted</frameName>
+        <hackBaseline>0.07</hackBaseline>
+        <distortionK1>0.0</distortionK1>
+        <distortionK2>0.0</distortionK2>
+        <distortionK3>0.0</distortionK3>
+        <distortionT1>0.0</distortionT1>
+        <distortionT2>0.0</distortionT2>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+
+</robot>

@@ -18,7 +18,9 @@
       <arg name="init_pose" value="-x -0.387 -y -1.291 -z 0.01 -R 0 -P 0 -Y 1.571" />
       <arg name="robot_name"  value="Robot1" />
      
-    <node pkg="joint_state_publisher" type="joint_state_publisher"  name="$(arg robot_name)_joint_state_publisher" output="screen"/>
+    <node pkg="joint_state_publisher" type="joint_state_publisher"  name="$(arg robot_name)_joint_state_publisher" output="screen">
+    <param publish_frequency="10" />
+    </node>
     <!-- <node pkg="$(arg robot_name)robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen"/> -->
     </include>
   </group>
@@ -34,7 +36,10 @@
       <arg name="robot_name"  value="Robot2" />
       
     <!-- <node pkg="$(arg robot_name)robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen"/> -->
-    <node pkg="joint_state_publisher" type="joint_state_publisher"  name="$(arg robot_name)_joint_state_publisher" output="screen"/>
+    <node pkg="joint_state_publisher" type="joint_state_publisher"  name="$(arg robot_name)_joint_state_publisher" output="screen">
+    <param publish_frequency="10" />
+    </node>
+
     </include>
 
   </group>
@@ -48,7 +53,10 @@
      
     
     <!-- <node pkg="$(arg robot_name)robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen"/> -->
-    <node pkg="joint_state_publisher" type="joint_state_publisher"  name="$(arg robot_name)_joint_state_publisher" output="screen"/>
+    <node pkg="joint_state_publisher" type="joint_state_publisher"  name="$(arg robot_name)_joint_state_publisher" output="screen">
+    <param publish_frequency="10" />
+    </node>
+
     </include>
   </group>
 
@@ -60,7 +68,9 @@
       <arg name="robot_name"  value="Robot4" />
 
     <!-- <node pkg="$(arg robot_name)robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen"/> -->
-    <node pkg="joint_state_publisher" type="joint_state_publisher"  name="$(arg robot_name)_joint_state_publisher" output="screen"/>
+    <node pkg="joint_state_publisher" type="joint_state_publisher"  name="$(arg robot_name)_joint_state_publisher" output="screen">
+    <param publish_frequency="10" />
+    </node>
     </include>
   </group>
 

@@ -11,7 +11,8 @@
 
 <!--####################### Round 2 ########################-->
   <!-- start world -->
-  <node name="gazebo" pkg="gazebo_ros" type="gazebo" args="$(find rover_sim)/world/round_2.world" respawn="false" output="screen" />
+  <!-- <node name="gazebo" pkg="gazebo_ros" type="gazebo" args="$(find rover_sim)/world/round_2.world" respawn="false" output="screen" /> -->
+  <node name="gazebo" pkg="gazebo_ros" type="gazebo" args="$(find rover_sim)/world/round_2_with_cambot.world" respawn="false" output="screen" />
 
 <!-- ####################################################### -->
 
@@ -25,7 +26,8 @@
   <!-- <node name="gazebo_gui" pkg="gazebo_ros" type="gzclient" respawn="false" output="screen"/> -->
 
 
-  <!-- <node pkg="tf" type="static_transform_publisher" name="base_to_cam" respawn="false" args="0 0 5 0 1 0 0 base_link camera_link 100"/> -->
+  <!-- <node pkg="tf" type="static_transform_publisher" name="base_to_cam" respawn="false" args="0 0 2.5 0 1 0 0 fiducial_10 camera_link 100"/> -->
+  <node pkg="tf" type="static_transform_publisher" name="base_to_cam" respawn="false" args="0 0 0 3.142 0 0 fiducial_10 map 20"/>
 <!-- <node name="cambot_spawner" pkg="gazebo_ros" type="spawn_model" args="-x -0 -y 0 -z 0 -R 0 -P 0 -Y 0 -urdf -param /camera_description -model cam_bot" respawn="false" output="screen" /> -->
 
 
@@ -34,6 +36,6 @@
   <include file="$(find multi_rover)/launch/multi_rover_aruco.launch"/>
   <include file="$(find multi_rover)/launch/static_transform.launch"/>
   <!-- <include file="$(find make_markers)/launch/aruco_detect_ros.launch"/> -->
-  <include file="$(find rover_description)/launch/robo_cam.launch"/>
+  <!-- <include file="$(find rover_description)/launch/robo_cam.launch"/> -->
   
 </launch>

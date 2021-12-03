@@ -23,11 +23,15 @@
     
     <node pkg="robot_state_publisher" type="robot_state_publisher" name="$(arg robot_name)robot_state_publisher" output="screen" respawn="false">
     <remap from="robot_description" to="robot_description_1" />
+    <param name="publish_frequency" value="10" />
+
     <!-- <remap from="joint_states" to="$(arg robot_name)_joint_states" /> -->
     </node>
 
     <node name="$(arg robot_name)_joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" respawn="false" output="screen">
     <remap from="robot_description" to="/robot_description_1" />
+    <param name="publish_frequency" value="10" />
+
     <!-- <remap from="joint_states" to="mango_joint_states" /> -->
     </node>
 
@@ -47,12 +51,14 @@
      respawn="false" output="screen" />
      
     <node pkg="robot_state_publisher" type="robot_state_publisher" name="$(arg robot_name)robot_state_publisher" output="screen">
+    <param name="publish_frequency" value="10" />
     
     <remap from="robot_description" to="robot_description_2" />
     <!-- <remap from="joint_states" to="$(arg robot_name)_joint_states" /> -->
     </node>
 
     <node pkg="joint_state_publisher" type="joint_state_publisher" name="$(arg robot_name)_joint_state_publisher" output="screen">
+    <param name="publish_frequency" value="10" />
     <remap from="robot_description" to="/robot_description_2" />
     <!-- <remap from="joint_states" to="$(arg robot_name)joint_joint_states" /> -->
     </node>
@@ -70,6 +76,7 @@
      args="$(arg init_pose) -urdf -param /robot_description_3 -model $(arg robot_name)" respawn="false" output="screen" />
      
     <node pkg="robot_state_publisher" type="robot_state_publisher" name="$(arg robot_name)robot_state_publisher" output="screen">
+    <param name="publish_frequency" value="10" />
     
     <remap from="robot_description" to="robot_description_3" />
     <!-- <remap from="joint_states" to="$(arg robot_name)_joint_states" /> -->
@@ -78,6 +85,7 @@
 
     <node pkg="joint_state_publisher" type="joint_state_publisher" name="$(arg robot_name)_joint_state_publisher" output="screen">
     <remap from="robot_description" to="/robot_description_3" />
+    <param name="publish_frequency" value="10" />
     <!-- <remap from="joint_states" to="$(arg robot_name)joint_joint_states" /> -->
     </node>
   </group>
@@ -92,6 +100,7 @@
      args="$(arg init_pose) -urdf -param /robot_description_4 -model $(arg robot_name)" respawn="false" output="screen" />
      
     <node pkg="robot_state_publisher" type="robot_state_publisher" name="$(arg robot_name)robot_state_publisher" output="screen">
+    <param name="publish_frequency" value="10" />
     
     <remap from="robot_description" to="robot_description_4" />
     <!-- <remap from="joint_states" to="$(arg robot_name)_joint_states" /> -->
@@ -99,6 +108,7 @@
 
     <node pkg="joint_state_publisher" type="joint_state_publisher" name="$(arg robot_name)_joint_state_publisher" output="screen">
     <remap from="robot_description" to="/robot_description_4" />
+    <param name="publish_frequency" value="10" />
     <!-- <remap from="joint_states" to="$(arg robot_name)joint_joint_states" /> -->
     </node>
   </group>
