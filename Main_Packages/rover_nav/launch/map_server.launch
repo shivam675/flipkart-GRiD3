@@ -2,13 +2,17 @@
 
 
 <node name="rover_nav_img_pub" pkg="rover_nav" type="img_pub.py"/>
-<node name="rover_nav_map" pkg="rover_nav" type="map_server.py"/>
+<!-- <node name="rover_nav_map" pkg="rover_nav" type="map_server.py"/> -->
+
 <!-- <node name="rover_marker_detection" pkg="rover_nav" type="marker_detection.py"/> -->
 
 
     <arg name="rviz_conf" default="$(find rover_nav)/rviz/default.rviz"/>
     <node type="rviz" name="rviz" pkg="rviz" args="-d $(arg rviz_conf)" /> 
 
+
+<arg name="map_file" default="$(find rover_nav)/maps/map.yaml"/>
+  <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
 
 <node pkg="tf2_ros" type="static_transform_publisher" name="map_to_world" args="0 0 0 -1.571 0 0 map world" />
 

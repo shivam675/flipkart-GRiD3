@@ -13,6 +13,7 @@ class Image_to_map:
     def __init__(self):
         rospy.init_node('Map_ServEr', anonymous=True)
         rospy.sleep(1)
+        self.rate = rospy.Rate(1)
         self.image_sub = rospy.Subscriber('/temp_topic', Image, self.img_callback)
 
         self.map_publihser = rospy.Publisher('/map', OccupancyGrid, queue_size=4)
@@ -100,8 +101,10 @@ class Image_to_map:
 
         img_m.info.resolution = 0.0023
 
-        img_m.info.origin.position.x = -1.311
-        img_m.info.origin.position.y = -1.01085
+        img_m.info.origin.position.x = +1.311
+        # img_m.info.origin.position.x = 0
+        img_m.info.origin.position.y = +1.01085
+        # img_m.info.origin.position.y = 0
 
         temp_2 = gray.flatten()
         temp_2 = temp_2.tolist()
@@ -113,6 +116,7 @@ class Image_to_map:
         # cv2.destroyAllWindows()
         # print(self.cords[10])
         self.cords = []
+        self.rate.sleep()
 
 if __name__ == '__main__':
     temp = Image_to_map()

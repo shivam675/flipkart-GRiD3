@@ -25,6 +25,7 @@ if __name__ == '__main__':
     # temp = cv2.imread('map_Moment.jpg')
     # temp = cv2.imread('material.png')
     temp = cv2.imread(map_path)
+    print(temp)
     m = rospy.Publisher('/temp_topic', Image, queue_size=10)
     msg = b.cv2_to_imgmsg(temp)
     while not rospy.is_shutdown():

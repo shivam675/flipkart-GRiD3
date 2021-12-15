@@ -59,6 +59,7 @@ Visualization Manager:
       Name: Axes
       Radius: 0.029999999329447746
       Reference Frame: <Fixed Frame>
+      Show Trail: false
       Value: true
     - Alpha: 1
       Class: rviz/RobotModel
@@ -277,7 +278,7 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        camera_link:
+        fiducial_10:
           Value: true
         map:
           Value: true
@@ -354,62 +355,61 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        map:
-          world:
-            camera_link:
-              {}
-            robot1/odom:
-              robot1/base_footprint:
-                robot1/base_link:
-                  robot1/caster_front:
-                    {}
-                  robot1/caster_rear:
-                    {}
-                  robot1/upper_plate:
-                    {}
-                  robot1/wheel_left:
-                    {}
-                  robot1/wheel_right:
-                    {}
-            robot2/odom:
-              robot2/base_footprint:
-                robot2/base_link:
-                  robot2/caster_front:
-                    {}
-                  robot2/caster_rear:
-                    {}
-                  robot2/upper_plate:
-                    {}
-                  robot2/wheel_left:
-                    {}
-                  robot2/wheel_right:
-                    {}
-            robot3/odom:
-              robot3/base_footprint:
-                robot3/base_link:
-                  robot3/caster_front:
-                    {}
-                  robot3/caster_rear:
-                    {}
-                  robot3/upper_plate:
-                    {}
-                  robot3/wheel_left:
-                    {}
-                  robot3/wheel_right:
-                    {}
-            robot4/odom:
-              robot4/base_footprint:
-                robot4/base_link:
-                  robot4/caster_front:
-                    {}
-                  robot4/caster_rear:
-                    {}
-                  robot4/upper_plate:
-                    {}
-                  robot4/wheel_left:
-                    {}
-                  robot4/wheel_right:
-                    {}
+        fiducial_10:
+          map:
+            world:
+              robot1/odom:
+                robot1/base_footprint:
+                  robot1/base_link:
+                    robot1/caster_front:
+                      {}
+                    robot1/caster_rear:
+                      {}
+                    robot1/upper_plate:
+                      {}
+                    robot1/wheel_left:
+                      {}
+                    robot1/wheel_right:
+                      {}
+              robot2/odom:
+                robot2/base_footprint:
+                  robot2/base_link:
+                    robot2/caster_front:
+                      {}
+                    robot2/caster_rear:
+                      {}
+                    robot2/upper_plate:
+                      {}
+                    robot2/wheel_left:
+                      {}
+                    robot2/wheel_right:
+                      {}
+              robot3/odom:
+                robot3/base_footprint:
+                  robot3/base_link:
+                    robot3/caster_front:
+                      {}
+                    robot3/caster_rear:
+                      {}
+                    robot3/upper_plate:
+                      {}
+                    robot3/wheel_left:
+                      {}
+                    robot3/wheel_right:
+                      {}
+              robot4/odom:
+                robot4/base_footprint:
+                  robot4/base_link:
+                    robot4/caster_front:
+                      {}
+                    robot4/caster_rear:
+                      {}
+                    robot4/upper_plate:
+                      {}
+                    robot4/wheel_left:
+                      {}
+                    robot4/wheel_right:
+                      {}
       Update Interval: 0
       Value: true
     - Alpha: 0.699999988079071
@@ -432,6 +432,30 @@ Visualization Manager:
       Normalize Range: true
       Queue Size: 2
       Transport Hint: raw
+      Unreliable: false
+      Value: true
+    - Alpha: 1
+      Buffer Length: 1
+      Class: rviz/Path
+      Color: 239; 41; 41
+      Enabled: true
+      Head Diameter: 0.30000001192092896
+      Head Length: 0.20000000298023224
+      Length: 0.30000001192092896
+      Line Style: Lines
+      Line Width: 0.029999999329447746
+      Name: Path
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Pose Color: 255; 85; 255
+      Pose Style: None
+      Queue Size: 10
+      Radius: 0.029999999329447746
+      Shaft Diameter: 0.10000000149011612
+      Shaft Length: 0.10000000149011612
+      Topic: /path
       Unreliable: false
       Value: true
   Enabled: true
@@ -462,7 +486,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 2.294306755065918
+      Distance: 2.899732828140259
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -478,9 +502,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.5997967720031738
+      Pitch: 1.5047967433929443
       Target Frame: <Fixed Frame>
-      Yaw: 4.098573207855225
+      Yaw: 5.038578987121582
     Saved: ~
 Window Geometry:
   Displays:
