@@ -39,17 +39,12 @@ Run the diff_drive_odometry node with arguments:
 3)Robot tag Ids (fiducial/tagslam)
 
 
-
-example: ~$ rosrun diff_drive diff_drive_odometry 2 'fiducial_102' 'fiducial_107' 'fiducial_106'
-
+## main command
+###
+```
+rosrun diff_drive diff_drive_odometry 2 'fiducial_102' 'fiducial_107' 'fiducial_106'
+```
 (2 robots, origin tagID and robot IDs)
-
-
-
-
-
-
-
 
 === 1. diff_drive_odometry
 
