@@ -14,7 +14,7 @@ class Image_to_map:
         rospy.init_node('Map_ServEr', anonymous=True)
         rospy.sleep(1)
         self.rate = rospy.Rate(1)
-        self.image_sub = rospy.Subscriber('/temp_topic', Image, self.img_callback)
+        self.image_sub = rospy.Subscriber('/usb_cam/image_raw', Image, self.img_callback)
 
         self.map_publihser = rospy.Publisher('/map', OccupancyGrid, queue_size=4)
         self.img_publihser = rospy.Publisher('/map_img', Image, queue_size=4)
@@ -24,6 +24,7 @@ class Image_to_map:
 
 
     def img_callback(self, img_msg):
+        # rospy.loginfo('Image Recieved')
         img = self.bridge.imgmsg_to_cv2(img_msg)
 
         ########### All Cv2 Actions begin here ##########
@@ -33,6 +34,9 @@ class Image_to_map:
         # corodinates
         
         # thresholds 
+        print(np.shape(img))
+        img = cv2.rotate(img, cv2.ROTATE_180)
+        # img = cv2.resize(img, (1600,1600))
         TAMin = rospy.get_param('thresholding_area_min', default=5000)
         TAMax = rospy.get_param('thresholding_area_max', default=15000)
 
@@ -99,12 +103,14 @@ class Image_to_map:
         img_m.info.width = w
     
 
-        img_m.info.resolution = 0.0023
+        img_m.info.resolution = 0.003
+        # img_m.info.origin.position.x = +1.311
+        # img_m.info.origin.position.y = +1.01085
+        
+        # img_m.info.resolution = 0.05
 
-        img_m.info.origin.position.x = +1.311
-        # img_m.info.origin.position.x = 0
-        img_m.info.origin.position.y = +1.01085
-        # img_m.info.origin.position.y = 0
+        img_m.info.origin.position.x = -1.44
+        img_m.info.origin.position.y = -1.08
 
         temp_2 = gray.flatten()
         temp_2 = temp_2.tolist()

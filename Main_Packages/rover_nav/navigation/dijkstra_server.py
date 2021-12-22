@@ -13,8 +13,8 @@ import matplotlib.pyplot as plt
 import math
 from nav_msgs.srv import GetPlan
 
-# show_animation = False
-show_animation = True
+show_animation = False
+# show_animation = True
 
 
 class Dijkstra:
@@ -206,109 +206,199 @@ class Dijkstra:
         return motion
 
 
+class dijkstra_ros:
 
-def gen_obstracle_poses(grid):
+    def __init__(self):
+        self.start_x = None
+        self.start_y = None
+        self.trans_x = None
+        self.trans_y = None
+        self.start_pose_x_mtrs = None
+        self.start_pose_y_mtrs = None
+        # self.rate = rospy.Rate(10)
+        self.frame_id = 'map'
+        self.pose_x = 0
+        self.pose_y = 0
+        self.theta = 0
+        self.waypoints = []
+        self.map_msg = rospy.wait_for_message("/map", OccupancyGrid, timeout=None)
+        # path message object
+        # self.path = Path()
+        # self.path.header.frame_id = 'map'
+        # self.path.header.stamp = rospy.Time.now()
+        # path waypoint list
+        self.path_list = []
+        self.path_publisher = rospy.Publisher('/path', Path, queue_size=10)
+        # self.path_publisher = rospy.Publisher('/move_base/NavfnROS/plan', Path, queue_size=10)
+        # 2D graph initializer
+        self.d2_graph = []
+        self.map_info = self.map_msg.info
+        self.map_res = self.map_msg.info.resolution
+        self.map_height = self.map_msg.info.height
+        self.map_width = self.map_msg.info.width
+        self.occupancy_threshold = 0.65
+        self.list_of_pixel_coordinates = []
+        self.turn_counter = 0
+        
+        # ########## Call functions already ###########33
 
-    h = grid.info.height
-    w = grid.info.width
-    resolution = grid.info.resolution
-    ox , oy = [], []
-    map_list = grid.data
-    do_add = False
-    for i in range(len(map_list)):
-        if do_add:
-                do_add = False
-                continue
-        if map_list[i] >= 0.65:   # 0.65 is obstracle threshold
-            ox.append(round(((i% w)*resolution - (w*resolution/2)), 1))
-            oy.append(round((((i//h)+1)*resolution - (h*resolution/2)), 1))
-            do_add = True
-    return ox, oy
-    pass
-
-
-def main(gird_map, x_goal, y_goal, x_start, y_start):
-    start_time = rospy.get_rostime()
-    rospy.loginfo("Inititated ...")
-
-    # start and goal position
-
-    ox, oy = gen_obstracle_poses(grid=gird_map)
-    # print(ox,oy)
-    sx = x_start  # [m]
-    sy = y_start # [m]
-    gx = x_goal # [m]
-    gy = y_goal  # [m]
-    print(sx,sy,gx,gy)
-    # grid_size = 0.2 # [m]  ###  BEST for navigation
-    grid_size = 0.05  # [m]  ###  BEST for navigation
-    robot_radius = 0.09 # [m]
-
-    if show_animation:  # pragma: no cover
-        plt.plot(ox, oy, ".k")
-        plt.plot(sx, sy, "og")
-        plt.plot(gx, gy, "xb")
-        plt.grid(True)
-        plt.axis("equal")
+        self.one_to_two_d_graph()
+        self.gen_obstracle_poses()
 
 
-    dijkstra = Dijkstra(ox, oy, grid_size, robot_radius)
-    rx, ry = dijkstra.planning(sx, sy, gx, gy)
-    path = publish_path(rx, ry)
-    end_time = rospy.get_rostime()
-    rospy.logwarn("Time taken to plan : " + str(round(end_time.secs - start_time.secs, 3)))
-    if show_animation:  # pragma: no cover
-        plt.plot(rx, ry, "-r")
-        plt.pause(1)
-        plt.show()
-    return path
 
-def publish_path(x,y):
+    def one_to_two_d_graph(self):
+        """
+        This function converts one dimentional map.data array to a
+        nested array of dimentions map.info.width X map.info.height
+        so map looks somewhat like following
+        [
+            [0, 0, 0, 0, -1],
+            [0, 1, 0, 0, 0],
+            [0, 0, 1, 0, 0],
+            [0, 1, 0, 0, 0],
+            [0, 0, 0, -1, 0]
 
-    msg = Path()
-    msg.header.frame_id = "map"
-    list_ = msg.poses
-    for i, j in zip(x[::-1], y[::-1]):
-        # print(i,j)
-        pose_msg = PoseStamped()
-        pose_msg.header.frame_id = "map"
-        msg.header.stamp = rospy.Time.now()
-        pose_msg.pose.position.x = round(i,2)
-        pose_msg.pose.position.y = round(j, 2)    
-        # print(pose_msg)
-        list_.append(pose_msg)
-    rospy.loginfo("No of Points : " + str(len(msg.poses)))
-    path_publisher.publish(msg)
-    return msg
+        ]
+
+        map coordinate axis
+            (0,0)
+            +---------------x
+            |               |
+            |               |
+            |               |
+            |               |
+            |               |
+            y---------------+
+
+        """
+        one_d_graph = self.map_msg.data
+
+        while one_d_graph:
+            self.d2_graph.append(one_d_graph[:self.map_msg.info.width])
+            one_d_graph = one_d_graph[self.map_msg.info.width:]
+
+        # reversing the map graph array to normalize the image
+        self.d2_graph = self.d2_graph[::-1]
+
+    def gen_obstracle_poses(self):
+        self.ox , self.oy = [], [] 
+        for i in range(len(self.d2_graph)):
+            for j in range(len(self.d2_graph[0])):
+                if self.d2_graph[i][j] >= 0.65:   # 0.65 is obstracle threshold
+                    self.ox.append(j)
+                    self.oy.append(i)
+        print('Done generating obs poses')
 
 
-def path_server():
-    rospy.loginfo('Started Listening !')
-    s = rospy.Service('get_plan', GetPlan, requesting_path)
-    s.spin()
 
-def requesting_path(req):
-    rospy.loginfo("Received Nav Request !")
-    # p = PoseStamped()
-    start_x, start_y = req.start.pose.position.x,req.start.pose.position.y
-    goal_x, goal_y = req.goal.pose.position.x, req.goal.pose.position.y
-    # p.pose.position.
-    rospy.loginfo('start pose > x: ' + str(start_x) + ' y: ' + str(start_y))
-    rospy.loginfo('goal pose > x: ' + str(goal_x) + ' y: ' + str(goal_y))
+    def transform_coordinates_to_grid(self, x_mtrs,  y_mtrs):   
+        '''
+        NOTE: This function takes x,y values in meters
+         and transforms it to 2D graph coordinates
+        '''
+        self.trans_x = self.map_width/2
+        self.trans_y = self.map_height/2
 
-    path = main(temp, goal_x, goal_y, start_x, start_y)
-    # rospy.loginfo(req.start.pose.position.x,req.start.pose.position.y)
-    return path
+        return self.trans_x + x_mtrs/self.map_res, self.trans_y - y_mtrs/self.map_res
 
-def test_dijkstra():
-    path = main(temp, -0.7, -0.7, 0.7, 0.7)
+    def transform_coordinates_to_rviz(self, x_px, y_px):
+        '''
+        NOTE: This function takse x,y values in index
+        of grid map and transforms it into Rviz mtr coordinates
+        '''
+        self.trans_x = self.map_width/2
+        self.trans_y = self.map_height/2
+
+        x_m, y_m = self.map_res*(x_px - self.trans_x), self.map_res*(self.trans_y - y_px)
+        return x_m, y_m
+
+    def publish_path(self, x, y):
+        '''
+        NOTE: This function is publishes the path with
+        respect to rviz coordinates in meters
+        '''
+
+        msg = Path()
+        msg.header.frame_id = "map"
+        list_ = msg.poses
+        for i, j in zip(x[::-1], y[::-1]):
+            # print(i,j)
+            x_mtrs, y_mtrs = self.transform_coordinates_to_rviz(i,j)
+            pose_msg = PoseStamped()
+            pose_msg.header.frame_id = "map"
+            msg.header.stamp = rospy.Time.now()
+            pose_msg.pose.position.x = round(x_mtrs,2)
+            pose_msg.pose.position.y = round(y_mtrs, 2)    
+            # print(pose_msg)
+            list_.append(pose_msg)
+        rospy.loginfo("No of Points : " + str(len(msg.poses)))
+        self.path_publisher.publish(msg)
+        return msg
+
+
+
+    def initiate_dijkstra(self, x_start, y_start, x_goal, y_goal):
+        start_time = rospy.get_rostime()
+        rospy.loginfo("Inititated ...")
+
+        # start and goal position
+        # print(ox,oy)
+        sx, sy = self.transform_coordinates_to_grid(x_start, y_start)  # [m]
+        gx, gy = self.transform_coordinates_to_grid(x_goal, y_goal) # [m]
+        print(sx,sy,gx,gy)
+        # grid_size = 0.2 # [m]  ###  BEST for navigation
+        grid_size = 1  # [m]  ###  BEST for navigation
+        robot_radius = 5 # [m]
+
+        if show_animation:  # pragma: no cover
+            plt.plot(self.ox, self.oy, ".k")
+            plt.plot(sx, sy, "og")
+            plt.plot(gx, gy, "xb")
+            plt.grid(True)
+            plt.axis("equal")
+
+
+        dijkstra = Dijkstra(self.ox, self.oy, grid_size, robot_radius)
+        rx, ry = dijkstra.planning(sx, sy, gx, gy)
+        path = self.publish_path(rx, ry)
+        end_time = rospy.get_rostime()
+        rospy.logwarn("Time taken to plan : " + str(round(end_time.secs - start_time.secs, 3)))
+        if show_animation:  # pragma: no cover
+            plt.plot(rx, ry, "-r")
+            plt.pause(1)
+            plt.show()
+        return path
+
+
+
+
+    def path_server(self):
+        rospy.loginfo('Started Listening !')
+        s = rospy.Service('get_plan', GetPlan, requesting_path)
+        s.spin()
+
+    def requesting_path(self,req):
+        rospy.loginfo("Received Nav Request !")
+        # p = PoseStamped()
+        start_x, start_y = req.start.pose.position.x,req.start.pose.position.y
+        goal_x, goal_y = req.goal.pose.position.x, req.goal.pose.position.y
+        # p.pose.position.
+        rospy.loginfo('start pose > x: ' + str(start_x) + ' y: ' + str(start_y))
+        rospy.loginfo('goal pose > x: ' + str(goal_x) + ' y: ' + str(goal_y))
+
+        path = self.initiate_dijkstra(start_x, start_y, goal_x, goal_y)
+        # rospy.loginfo(req.start.pose.position.x,req.start.pose.position.y)
+        return path
+
+    def test_dijkstra(self):
+        path = self.initiate_dijkstra(0, -0.5, 0, 0.5)
 
 
 if __name__ == '__main__':
     rospy.init_node("dijkstra_algo", anonymous=True)
-    temp = rospy.wait_for_message("/map", OccupancyGrid, timeout=None)
-    # just publish the path message once and send the path to server call   
-    path_publisher = rospy.Publisher("/path", Path, queue_size=10)
     # path_server()
-    test_dijkstra()
+    k = dijkstra_ros()
+    k.test_dijkstra()
+    # rospy.spin_once()
     sys.exit()

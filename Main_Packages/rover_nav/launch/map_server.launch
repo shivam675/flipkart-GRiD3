@@ -1,11 +1,27 @@
 <launch>
 
 
-<node name="rover_nav_img_pub" pkg="rover_nav" type="img_pub.py"/>
+<!-- <node name="rover_nav_img_pub" pkg="rover_nav" type="img_pub.py"/> -->
 <!-- <node name="rover_nav_map" pkg="rover_nav" type="map_server.py"/> -->
 
 <!-- <node name="rover_marker_detection" pkg="rover_nav" type="marker_detection.py"/> -->
 
+ <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+    <param name="base_global_planner" value="navfn/NavfnROS" /> 
+
+
+    <rosparam file="$(find rover_nav)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find rover_nav)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find rover_nav)/config/global_costmap_params.yaml" command="load" />
+    <!-- <rosparam file="$(find rover_nav)/config/dwa_local_planner.yaml" command="load" /> -->
+    <rosparam file="$(find rover_nav)/config/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find rover_nav)/config/move_base_param.yaml" command="load"  ns="/"/>
+
+
+
+  </node>
+  
 
     <arg name="rviz_conf" default="$(find rover_nav)/rviz/default.rviz"/>
     <node type="rviz" name="rviz" pkg="rviz" args="-d $(arg rviz_conf)" /> 
