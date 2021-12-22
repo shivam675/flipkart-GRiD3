@@ -1,0 +1,17 @@
+<launch>
+ <node name="diff_drive_odometry" pkg="aruco_markers" type="diff_drive_odometry" output="screen" >
+ <arg name="number_of_robots" default=1/>
+ <arg name="orig_id" default= "tag_12"/>
+ <arg name="robot_1_id" default = "tag_10"/>
+ <arg name="robot_2_id" default = "tag_10"/>
+ <arg name="robot_3_id" default = "tag_10"/>
+ <arg name="robot_4_id" default = "tag_10"/>
+
+
+
+
+
+
+
+
+</launch>
