@@ -18,8 +18,6 @@
     <rosparam file="$(find rover_nav)/config/local_costmap_params.yaml" command="load" />
     <rosparam file="$(find rover_nav)/config/move_base_param.yaml" command="load"  ns="/"/>
 
-
-
   </node>
   
 

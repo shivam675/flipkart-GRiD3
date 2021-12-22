@@ -15,7 +15,7 @@ path = path.get_path('rover_nav')
 
 
 class rover_one:
-    def __init__(self, name='rover_1') -> None:
+    def __init__(self, name='rover_2') -> None:
         self.rover_name = name
         self.package_id = None
         self.package_name = None
@@ -28,7 +28,7 @@ class rover_one:
         self.location_dict = {}
 
     def service_server(self):
-        rospy.Service('/schedule/rover_one',get_task ,self.get_task_callback)
+        rospy.Service('/schedule/rover_two',get_task ,self.get_task_callback)
     
     def get_task_callback(self, req):
         self.odom_pose = PoseStamped()
@@ -96,13 +96,13 @@ class rover_one:
     def get_odom(self):
         t = tf.TransformListener()
         now = rospy.Time.now()
-        (trans,rot) = t.lookupTransform('robot1/base_link', 'map', time=now)
+        (trans,rot) = t.lookupTransform('robot2/base_link', 'map', time=now)
         self.odom_x, self.odom_y, _ = trans
 
 
     def send_paths(self):
         rospy.set_param('robot1/is_running', True)
-        sendpath = rospy.ServiceProxy('robot1/exec_path', path_service)
+        sendpath = rospy.ServiceProxy('robot2/exec_path', path_service)
         result_1 = sendpath(path = self.path_one)
         rospy.loginfo('sending path to the rover_script : ' + str(result_1))
         result_2 = sendpath(path = self.path_two)
@@ -110,7 +110,7 @@ class rover_one:
 
 
 if __name__ == '__main__':
-    rospy.init_node('rover_1_node', anonymous=True)
+    rospy.init_node('rover_2_node', anonymous=True)
     g = rover_one()
     g.read_locations()
     g.service_server()
