@@ -1,37 +1,37 @@
 chutes:
-  mumbai:
+  Mumbai:
     px: -0.372618
     py: -0.615291
 
-  delhi:
+  Delhi:
     px: -0.372625
     py: 0.006882
 
-  kolkata:
+  Kolkata:
     px: -0.372661
     py: 0.609187
 
-  chennai:
+  Chennai:
     px: 0.244225
     py: -0.603566
 
-  bangalore:
+  Bangalore:
     px: 0.244224
     py: -0.003459
 
-  hyderabad:
+  Hyderabad:
     px: 0.244240
     py: 0.609199
 
-  pune:
+  Pune:
     px: 0.838863
     py: -0.603615
 
-  ahemdabad:
+  Ahmedabad:
     px: 0.838924
     py: 0.001138
 
-  jaipur:
+  Jaipur:
     px: 0.838990
     py: 0.603527
 

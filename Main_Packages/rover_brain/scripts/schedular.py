@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
-from codecs import encode
 import rospy
 import csv
 from threading import Thread
+from rospy.timer import sleep
 from rover_nav.srv import get_task, path_service
 import rospkg
 
@@ -15,12 +15,15 @@ class schedualar:
         self.rover_1_status = None
         self.rover_2_status = None
         self.keep_checking_status = True
-        self.open_list = []
+        self.open_list_one = []
+        self.open_list_two = []
         self.fields = []
         self.close_list = []
         self.package_count = 0
         self.induct_station_one = None
         self.induct_station_two = None
+        self.rover_status_dict = {}
+        self.free_rover = ''
         pass
 
 
@@ -30,15 +33,15 @@ class schedualar:
 
     def check_who_is_free(self):
         while self.keep_checking_status:
-            if rospy.get_param('robot1/is_running', default=False):
-                self.rover_1_status = True
-            if rospy.get_param('robot2/is_running', default=False):
-                self.rover_2_status = True
-            if rospy.get_param('induct_station_1', default = False):
-                self.induct_station_one = True
-            if rospy.get_param('induct_station_1', default = False):
-                self.induct_station_two = True
-            rospy.sleep(0.5)
+            self.rover_status_dict['rover_one'] = rospy.get_param('robot1/is_running', default=False)
+            self.rover_status_dict['rover_two'] = rospy.get_param('robot2/is_running', default=False)
+            ####################### 
+            # Check which induct is free
+            #######################
+            self.induct_station_one = rospy.get_param('induct_station_1', default = False)
+            self.induct_station_two = rospy.get_param('induct_station_2', default = False)
+            print(self.rover_status_dict)
+            rospy.sleep(0.4)
 
 
     def encode_goals(self, Shipment, Induct_Station,Destination):
@@ -56,39 +59,78 @@ class schedualar:
 
         return message
 
+    def get_free_rover(self):
+        for j in self.rover_status_dict:
+            if self.rover_status_dict[j]:
+                self.free_rover = j
+                break
+            else:
+                self.free_rover = None
 
-    def plan(self):
-        while self.open_list:
 
-            if self.open_list[0][1] == '1':
-                if self.rover_1_status and self.induct_station_one:
-                    data_list = self.open_list.pop(0)
-                    mes = self.encode_goals(data_list[0], data_list[1], data_list[2])
-                    exec_srv = rospy.ServiceProxy('/schedule/rover_one', get_task)
-                    exec_srv(mes)
 
-            if self.open_list[0][1] == '2':
-                if self.rover_1_status and self.induct_station_two:
-                    data_list = self.open_list.pop(0)
-                    mes = self.encode_goals(data_list[0], data_list[1], data_list[2])
-                    exec_srv = rospy.ServiceProxy('/schedule/rover_two', get_task)
-                    exec_srv(mes)
 
-            rospy.sleep(0.5)
+    def plan_for_induct_one(self):
+        while self.open_list_one:
+            try:
+                self.get_free_rover()
+                # rospy.loginfo('new package initiated')
+                if self.free_rover != None and self.induct_station_one:
+                    data_list = self.open_list_one.pop(0)
+                    mes = self.encode_goals(data_list[0], 'dock_one', data_list[2])
+                    exec_srv = rospy.ServiceProxy('/schedule/' + self.free_rover, get_task)
+                    exec_srv(mes.package_id, mes.package_name, mes.chute_name, mes.dock_station_name)
+                    self.package_count += 1
+                rospy.sleep(0.5)
+            except TypeError:
+                pass
 
+
+    def plan_for_induct_two(self):
+        while self.open_list_two:
+            try:
+                self.get_free_rover()
+                # rospy.loginfo('new package initiated')
+                if self.free_rover != None and self.induct_station_two:
+                    data_list = self.open_list_two.pop(0)
+                    mes = self.encode_goals(data_list[0], 'dock_one', data_list[2])
+                    exec_srv = rospy.ServiceProxy('/schedule/' + self.free_rover, get_task)
+                    exec_srv(mes.package_id, mes.package_name, mes.chute_name, mes.dock_station_name)
+                    self.package_count += 1
+                rospy.sleep(0.5)
+            except TypeError:
+                pass
+    
+
+    def thread_for_plan_one(self):
+        self.t_one = Thread(target = self.plan_for_induct_one)
+        self.t_one.start()
+
+    # def thread_for_plan_two(self):
+    #     self.t_two = Thread(target = self.plan_for_induct_two)
+    #     self.t_two.start()
 
 
     def read_csv(self):
-        with open('data/data.csv', 'r') as csvfile:
+        with open(path + '/scripts/data/data.csv', 'r') as csvfile:
             csvreader = csv.reader(csvfile)
             self.fields = next(csvreader)
             # print(csvreader)
             for row in csvreader:
-                self.open_list.append(row)
-
+                if row[1] == '1':
+                    self.open_list_one.append(row)
+                else:
+                    self.open_list_two.append(row)
+        rospy.loginfo("Number of Packages for Induct 1 : " + str(len(self.open_list_one)))
+        rospy.loginfo("Number of Packages for Induct 2 : " + str(len(self.open_list_two)))
 
 if __name__ == '__main__':
+    rospy.init_node('main_schedular', anonymous=True)
     k = schedualar()
+    rospy.sleep(0.5)
     k.read_csv()
     k.thread_for_service()
-    k.plan()
+    k.thread_for_plan_one()
+    rospy.loginfo('1 main thread and 2 sub threads running')
+    k.plan_for_induct_two()
+    # k.thread_for_plan_two()

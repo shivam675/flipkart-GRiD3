@@ -1,10 +1,11 @@
 #!/usr/bin/python3
-# from threading import TIMEOUT_MAX
+from rospkg.rospack import RosStack
 import rospy
 from geometry_msgs.msg import PoseStamped
 import tf
 import sys
 # from threading import Thread
+from nav_msgs.msg import Odometry, Path
 from rover_nav.srv import get_task, path_service
 from nav_msgs.srv import GetPlan
 import rospkg
@@ -26,14 +27,15 @@ class rover_one:
         self.odom_y = None
         self.return_status = 'Done'
         self.location_dict = {}
+        self.pub_locations = rospy.Publisher('location_publisher', PoseStamped, queue_size=10)
 
     def service_server(self):
         rospy.Service('/schedule/rover_one',get_task ,self.get_task_callback)
+        rospy.spin()
     
     def get_task_callback(self, req):
-        self.odom_pose = PoseStamped()
-        self.start_pose = PoseStamped()
-        self.goal_pose = PoseStamped()
+        rospy.loginfo('Request Received !')
+        
         self.get_odom()
 
 
@@ -41,34 +43,54 @@ class rover_one:
         self.package_name = req.package_name
         self.chute_name = req.chute_name
         self.dock_station_name = req.dock_station_name
-        self.path_one = None
-        self.path_two = None
+        # self.path_one = None
+        # self.path_two = None
+        # m = Path()
+        # m.poses
 
         self.process_request()
-        # return self.return_status
+        # 
+        return self.return_status
     
     def read_locations(self):
         with open(path + '/info/locations.yaml') as file:
             data = yaml.load(file, yaml.FullLoader)
             # print(data['chutes']['mumbai']['px'])
             self.location_dict = data
+            
+        for i in self.location_dict['chutes']:
+            # print(self.location_dict['chutes'][i]['px'])
+            # pass
+            point = PoseStamped()
+            point.header.frame_id = 'map'
+            point.pose.position.x = self.location_dict['chutes'][i]['px']
+            point.pose.position.y = self.location_dict['chutes'][i]['py']
+            self.pub_locations.publish(point)
+            rospy.sleep(0.3)
+        # print(self.location_dict)
 
     def process_request(self):
 
         req_1 = GetPlan()
         req_2 = GetPlan()
 
+        self.odom_pose = PoseStamped()
+        self.start_pose = PoseStamped()
+        self.goal_pose = PoseStamped()
+
+        rospy.sleep(0.4)
+
         self.odom_pose.header.frame_id = "map"
         self.start_pose.header.frame_id = "map"
         self.goal_pose.header.frame_id = "map"
 
-        self.odom_pose.header.stamp = rospy.Time(0)
-        self.start_pose.header.stamp = rospy.Time(0)
-        self.goal_pose.header.stamp = rospy.Time(0)
+        # self.odom_pose.header.stamp = rospy.Time.now()
+        # self.start_pose.header.stamp = rospy.Time.now()
+        # self.goal_pose.header.stamp = rospy.Time.now()
 
-        self.odom_pose.header.seq = 0
-        self.start_pose.header.seq = 0
-        self.goal_pose.header.seq = 0
+        # self.odom_pose.header.seq = 0
+        # self.start_pose.header.seq = 0
+        # self.goal_pose.header.seq = 0
 
         self.odom_pose.pose.position.x = self.odom_x
         self.odom_pose.pose.position.y = self.odom_y
@@ -80,24 +102,28 @@ class rover_one:
         self.goal_pose.pose.position.y = self.location_dict['docks'][self.dock_station_name]['px']
 
         ###################################
-        req_1.start = self.odom_pose
-        req_1.goal = self.start_pose
-        req_1.tolerance = 0.1
+        # req_1.start = self.odom_pose
+        # req_1.goal = self.start_pose
+        # req_1.tolerance = 0.2
         ###################################
-        req_2.start = self.start_pose
-        req_2.goal = self.goal_pose
-        req_1.tolerance = 0.1
+        # req_2.start = self.start_pose
+        # req_2.goal = self.goal_pose
+        # req_2.tolerance = 0.2
         ###################################
-
+        # print(self.odom_pose)
+        # print(self.start_pose)
+        rospy.loginfo('Requesting Path')
         self.get_plan = rospy.ServiceProxy('/move_base/make_plan', GetPlan)
-        self.path_one = self.get_plan(req_1.start, req_1.goal, req_1.tolerance)
-        self.path_two = self.get_plan(req_2.start, req_2.goal, req_2.tolerance)
+        self.path_one = self.get_plan.call(self.odom_pose, self.start_pose, 0)
+        rospy.loginfo('Plan one Done')
+        self.path_two = self.get_plan.call(self.start_pose, self.goal_pose, 0)
+        print(len(self.path_one.plan.poses))
+        # rospy.loginfo(len(self.path_two.poses))
     
     def get_odom(self):
-        t = tf.TransformListener()
-        now = rospy.Time.now()
-        (trans,rot) = t.lookupTransform('robot1/base_link', 'map', time=now)
-        self.odom_x, self.odom_y, _ = trans
+        x = rospy.wait_for_message('/robot1/odom', Odometry, timeout=1)
+        # p = Odometry()
+        self.odom_x, self.odom_y = x.pose.pose.position.x, x.pose.pose.position.y
 
 
     def send_paths(self):

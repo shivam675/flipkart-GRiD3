@@ -2,7 +2,5 @@ int32 package_id
 string package_name
 string chute_name
 string dock_station_name
-
 ---
-
 string result

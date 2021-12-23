@@ -14,7 +14,7 @@ path = rospkg.RosPack()
 path = path.get_path('rover_nav')
 
 
-class rover_one:
+class rover_two:
     def __init__(self, name='rover_2') -> None:
         self.rover_name = name
         self.package_id = None
@@ -29,6 +29,7 @@ class rover_one:
 
     def service_server(self):
         rospy.Service('/schedule/rover_two',get_task ,self.get_task_callback)
+        rospy.spin()
     
     def get_task_callback(self, req):
         self.odom_pose = PoseStamped()
@@ -111,6 +112,6 @@ class rover_one:
 
 if __name__ == '__main__':
     rospy.init_node('rover_2_node', anonymous=True)
-    g = rover_one()
+    g = rover_two()
     g.read_locations()
     g.service_server()
