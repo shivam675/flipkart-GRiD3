@@ -19,24 +19,24 @@ add_action_files(
   followPath.action
 )
 
-if (CATKIN_ENABLE_TESTING)
-  catkin_add_nosetests(tests)
-endif()
+# if (CATKIN_ENABLE_TESTING)
+#   catkin_add_nosetests(tests)
+# endif()
 
-if (CATKIN_ENABLE_TESTING)
-  find_package(rostest REQUIRED)
-#  add_rostest(tests/your_first_rostest.test)
-#  add_rostest(tests/your_second_rostest.test)
-endif()
+# if (CATKIN_ENABLE_TESTING)
+#   find_package(rostest REQUIRED)
+# #  add_rostest(tests/your_first_rostest.test)
+# #  add_rostest(tests/your_second_rostest.test)
+# endif()
 
-catkin_install_python(
-    PROGRAMS
-        nodes/diff_drive_odometry
-        nodes/diff_drive_controller
-        nodes/diff_drive_go_to_goal
-        nodes/path_controller
-	nodes/diff_drive_mock_robot
-    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+# catkin_install_python(
+#     PROGRAMS
+#         nodes/diff_drive_odometry
+#         nodes/diff_drive_controller
+#         nodes/diff_drive_go_to_goal
+#         nodes/path_controller
+# 	nodes/diff_drive_mock_robot
+#     DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 catkin_python_setup()
 
