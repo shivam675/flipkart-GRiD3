@@ -32,10 +32,10 @@ class rover_one:
     def service_server(self):
         rospy.Service('/schedule/rover_one',get_task ,self.get_task_callback)
         rospy.spin()
-    
+
     def get_task_callback(self, req):
-        rospy.loginfo('Request Received !')
-        
+        # rospy.loginfo('Request Received !')
+
         self.get_odom()
 
 
@@ -95,11 +95,11 @@ class rover_one:
         self.odom_pose.pose.position.x = self.odom_x
         self.odom_pose.pose.position.y = self.odom_y
 
-        self.start_pose.pose.position.x = self.location_dict['chutes'][self.chute_name]['px']
-        self.start_pose.pose.position.y = self.location_dict['chutes'][self.chute_name]['py']
+        self.start_pose.pose.position.x = self.location_dict['docks'][self.dock_station_name]['px']
+        self.start_pose.pose.position.y = self.location_dict['docks'][self.dock_station_name]['px']
 
-        self.goal_pose.pose.position.x = self.location_dict['docks'][self.dock_station_name]['px']
-        self.goal_pose.pose.position.y = self.location_dict['docks'][self.dock_station_name]['px']
+        self.goal_pose.pose.position.x = self.location_dict['chutes'][self.chute_name]['px']
+        self.goal_pose.pose.position.y = self.location_dict['chutes'][self.chute_name]['py']
 
         ###################################
         # req_1.start = self.odom_pose
@@ -112,19 +112,17 @@ class rover_one:
         ###################################
         # print(self.odom_pose)
         # print(self.start_pose)
-        rospy.loginfo('Requesting Path')
+        # rospy.loginfo('Requesting Path')
         self.get_plan = rospy.ServiceProxy('/move_base/make_plan', GetPlan)
-        self.path_one = self.get_plan.call(self.odom_pose, self.start_pose, 0)
-        rospy.loginfo('Plan one Done')
+        # self.path_one = self.get_plan.call(self.odom_pose, self.start_pose, 0)
         self.path_two = self.get_plan.call(self.start_pose, self.goal_pose, 0)
-        print(len(self.path_one.plan.poses))
-        # rospy.loginfo(len(self.path_two.poses))
+
     
     def get_odom(self):
         x = rospy.wait_for_message('/robot1/odom', Odometry, timeout=1)
         # p = Odometry()
         self.odom_x, self.odom_y = x.pose.pose.position.x, x.pose.pose.position.y
-
+        print(self.odom_x, self.odom_y)
 
     def send_paths(self):
         rospy.set_param('robot1/is_running', True)
