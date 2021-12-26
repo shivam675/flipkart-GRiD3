@@ -1,6 +1,0 @@
-# get start and goal pose and send path message 
-geometry_msgs/Pose[] start_pose
-geometry_msgs/Pose[] goal_pose
-string robot_name
----
-nav_msgs/Path[] plan

@@ -1,7 +1,9 @@
-image: map_flipkart.pgm
+image: map_rotated_90.pgm
 # resolution: 0.002300
-resolution: 0.002
-origin: [-1.6, -1.6, 0]
+resolution: 0.0031
+# resolution: 0.002
+origin: [-1.705, -1.705, 0]
+# origin: [-1.1, -1.1, 0]
 negate: 0
 occupied_thresh: 0.65
 free_thresh: 0.196

@@ -1,43 +1,48 @@
-mumbai:
-  px: -0.372618
-  py: -0.615291
+chutes:
+# having problems
+  Mumbai:
+    px: -0.79
+    py: 0.478
 
-delhi:
-  px: -0.372625
-  py: 0.006882
+  Delhi:
+    px: 0
+    py: 0.99
 
-kolkata:
-  px: -0.372661
-  py: 0.609187
+  Kolkata:
+    px: 0.763
+    py: 1.002
 
-chennai:
-  px: 0.244225
-  py: -0.603566
+# Chennai is having problems
+  Chennai:
+    px: -0.763
+    py: -0.27
 
-bangalore:
-  px: 0.244224
-  py: -0.003459
+  Bengaluru:
+    px: 0.0
+    py: 0.266
 
-hyderabad:
-  px: 0.244240
-  py: 0.609199
+  Hyderabad:
+    px: 0.758
+    py: 0.258
 
-pune:
-  px: 0.838863
-  py: -0.603615
+  Pune:
+    px: -0.75
+    py: -0.533
 
-ahemdabad:
-  px: 0.838924 
-  py: 0.001138
+  Ahmedabad:
+    px: 0.0
+    py: -0.51
 
-jaipur:
-  px: 0.838990
-  py: 0.603527
+  Jaipur:
+    px: 0.763
+    py: -0.511
 
-dock_one:
-  px: -0.385828
-  py: -1.285653
 
-dock_two:
-  px: 0.378381
-  py: -1.282514
+docks:
+  dock_one:
+    px: -1.270
+    py: 0.389
+
+  dock_two:
+    px: -1.271
+    py: -0.381
