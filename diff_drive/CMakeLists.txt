@@ -14,7 +14,9 @@ find_package(catkin REQUIRED COMPONENTS
 
 add_action_files(
   DIRECTORY action
-  FILES GoToPose.action
+  FILES 
+  GoToPose.action
+  followPath.action
 )
 
 if (CATKIN_ENABLE_TESTING)
@@ -32,13 +34,14 @@ catkin_install_python(
         nodes/diff_drive_odometry
         nodes/diff_drive_controller
         nodes/diff_drive_go_to_goal
+        nodes/path_controller
 	nodes/diff_drive_mock_robot
     DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 catkin_python_setup()
 
 generate_messages (
-  DEPENDENCIES actionlib_msgs std_msgs geometry_msgs
+  DEPENDENCIES actionlib_msgs std_msgs geometry_msgs nav_msgs
 )
 
 catkin_package(

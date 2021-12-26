@@ -30,8 +30,8 @@ class GoalController:
 
         ##PID parameters
 
-        self.Kp_turn = rospy.get_param('~Kp_turn', 0.1)
-        self.Kd_turn = rospy.get_param('~Kd_turn', 0.01)
+        self.Kp_turn = rospy.get_param('~Kp_turn', 0.15)
+        self.Kd_turn = rospy.get_param('~Kd_turn', 0.1)
         self.Ki_turn = rospy.get_param('~Ki_turn', 0.001)
 
         self.Kp_speed = rospy.get_param('~Kp_speed', 0.15)

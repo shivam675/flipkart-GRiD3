@@ -28,26 +28,27 @@ class OdometryNode:
         self.odomFrameID = []
         self.odometry = []
 
-        if(len(sys.argv) ==0 ):
-            print("Error: enter number of bots")
-
-        if (len(sys.argv)< int(sys.argv[1])+1):
-            print("Insufficient tag IDs entered")
-
-        else:
-            self.baseFrameID = sys.argv[2]
+        self.num_tags = int(rospy.get_param('/diff_drive_odometry/number_of_robots', 1))
+        self.baseFrameID = rospy.get_param('/diff_drive_odometry/orig_id' , 'tag_12')
+        print(self.baseFrameID)
 
 
-            for i in range(3,len(sys.argv)):
-                self.odomFrameID.append(sys.argv[i])
-                self.odometry.append(odometry.Odometry(self.baseFrameID,self.odomFrameID[i-3]))
+        
+        for i in range(self.num_tags):
+            odom= rospy.get_param("/diff_drive_odometry/robot_"+str(i+1)+"_id")
+            print(odom)
+            self.odomFrameID.append(odom)
+            self.odometry.append(odometry.Odometry(self.baseFrameID, odom))
+
+        
+        
 
 
     def main(self):
         self.odomPub = []
 
         for i in range(len(self.odomFrameID)):
-            self.odomPub.append(rospy.Publisher('odom'+'bot'+str(i+1), Odometry, queue_size=10))  ##start odom publishers
+            self.odomPub.append(rospy.Publisher('/robot'+str(i+1)+'/odom', Odometry, queue_size=10))  ##start odom publishers
         
 
         
@@ -94,10 +95,12 @@ class OdometryNode:
         #    self.odomFrameID
         #)
 
+        print("updated {} odom".format(self.odomFrameID[pt]))
+
         odom = Odometry()
         odom.header.stamp = now
-        odom.header.frame_id = self.odomFrameID
-        odom.child_frame_id = self.baseFrameID[pt]
+        odom.header.frame_id = self.odomFrameID[pt]
+        odom.child_frame_id = str(self.baseFrameID)
         odom.pose.pose.position.x = pose.x
         odom.pose.pose.position.y = pose.y
         odom.pose.pose.orientation.x = q[0]

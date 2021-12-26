@@ -1,0 +1,18 @@
+<!-- following packages are required: usb-cam, aruco-detect, apriltag-ros -->
+
+<launch>
+<include file= "$(find usb_cam)/launch/usb_cam-test.launch" />
+<include file= "$(find apriltag_ros)/launch/continuous_detection.launch" />
+<!-- include file= "$(find aruco_detect)/launch/aruco_detect.launch" / -->
+
+ <node name="diff_drive_odometry" pkg="diff_drive" type="diff_drive_odometry" output="screen" respawn="true" >
+ 	<param name="number_of_robots" value='2' />
+ 	<param name="orig_id" value= "tag_12" />
+ 	<param name="robot_1_id" value = "tag_10" />
+        <param name="robot_2_id" value = "tag_4" />
+<!--  <arg name="robot_3_id" default = "tag_10"/> -->
+<!--  <arg name="robot_4_id" default = "tag_10"/> -->
+ </node>
+
+
+</launch>

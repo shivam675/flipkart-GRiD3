@@ -4,6 +4,7 @@ from diff_drive.encoder import Encoder
 from diff_drive.pose import Pose
 import rospy
 import tf
+import tf2_ros
 
 class Odometry:
     """Keeps track of the current position and velocity of a
@@ -48,8 +49,7 @@ class Odometry:
         v2 
         added pose update using aruco/apriltag transform
         """
-
-        print("updated odom")
+        
         trans= [0,0,0]
         rot=[0,0,0]
         try: 
@@ -57,15 +57,15 @@ class Odometry:
             listener.waitForTransform(self.orig_tag_id, self.robot_object_id, rospy.Time(0), rospy.Duration(3))
             (trans,rot) = listener.lookupTransform(self.orig_tag_id,self.robot_object_id , rospy.Time(0))
 
-        except (tf2_ros.LookupException):
+        except (tf.LookupException):
             print("tf lookupException")
             rospy.set_param('bot_detected', 0)
             pass
-        except (tf2_ros.ConnectivityException):
+        except (tf.ConnectivityException):
             print("tf connectivity exception")
             rospy.set_param('bot_detected', 0)
             pass
-        except(tf2_ros.ExtrapolationException):
+        except(tf.ExtrapolationException):
             print("tf extrapolation exception")
             rospy.set_param('bot_detected', 0)
             pass
