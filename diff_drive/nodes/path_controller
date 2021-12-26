@@ -56,10 +56,12 @@ class GoToGoalNode:
         rospy.Subscriber('/robot'+ str(self.robotID)+ '/odom', Odometry, self.on_odometry)
         #rospy.Subscriber('odom', PoseWithCovariance, self.on_odometry)
         # rospy.Subscriber('/path', Path, self.on_path)
-        rospy.Service('robot1/exec_path', GetPlan, self.on_path)
-
         self.goal_achieved_pub = rospy.Publisher("robot_"+self.robotID+'_goal_achieved', Bool,
                                                  queue_size=1)
+
+        rospy.Service('robot1/exec_path', GetPlan, self.on_path)
+        rospy.spin()
+
 
 
 
@@ -276,6 +278,8 @@ class GoToGoalNode:
         action_path.path = path
         self.action_client.send_goal(action_path)
 
+        return 'Success'
+
     def get_angle_pose(self, quaternion_pose):
         q = [quaternion_pose.orientation.x,
              quaternion_pose.orientation.y,
@@ -301,6 +305,6 @@ if __name__ == '__main__':
     try:
         node = GoToGoalNode()
         node.main()
-        rospy.spin()
+        
     except rospy.ROSInterruptException:
         pass

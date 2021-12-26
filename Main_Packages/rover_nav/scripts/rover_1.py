@@ -10,6 +10,9 @@ from rover_nav.srv import get_task, path_service
 from nav_msgs.srv import GetPlan
 import rospkg
 import yaml
+# import actionlib
+from std_msgs.msg import Bool
+
 
 path = rospkg.RosPack()
 path = path.get_path('rover_nav')
@@ -28,6 +31,7 @@ class rover_one:
         self.return_status = 'Done'
         self.location_dict = {}
         self.pub_locations = rospy.Publisher('location_publisher', PoseStamped, queue_size=10)
+        self.sendpath = rospy.Publisher('robot1/exec_path', Path)
 
     def service_server(self):
         print('Rospy server started')
@@ -140,11 +144,13 @@ class rover_one:
 
     def send_paths(self):
         rospy.set_param('robot1/is_running', True)
-        sendpath = rospy.ServiceProxy('robot1/exec_path', path_service)
-        result_1 = sendpath(path = self.path_one)
-        rospy.loginfo('sending path to the rover_script : ' + str(result_1))
-        result_2 = sendpath(path = self.path_two)
-        rospy.loginfo('sending path to the rover_script : ' + str(result_2))
+        self.sendpath.publish(self.path_one)
+        self.result_1 = rospy.wait_for_message('/waiting_for_response_one', Bool, timeout=None)
+        rospy.loginfo('sending path to the rover_script : ' + str(self.result_1))
+        self.result_2 = self.sendpath.publish(self.path_two)
+        # p = Bool()
+        self.result_1 = rospy.wait_for_message('/waiting_for_response_one', Bool, timeout=None)
+        rospy.loginfo('sending path to the rover_script : ' + str(self.result_2))
 
 
 if __name__ == '__main__':
