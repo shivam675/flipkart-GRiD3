@@ -10,7 +10,11 @@ from nav_msgs.msg import Odometry
 from std_msgs.msg import Float32, Bool
 import actionlib
 import sys
+<<<<<<< HEAD
+from nav_msgs.srv import GetPlan
+=======
 
+>>>>>>> 9b2cb00609773735cdd0a2bbbbdbe4fa7cf39385
 
 from diff_drive import goal_controller
 from diff_drive import pose
@@ -55,7 +59,12 @@ class GoToGoalNode:
 
         rospy.Subscriber('/robot'+ str(self.robotID)+ '/odom', Odometry, self.on_odometry)
         #rospy.Subscriber('odom', PoseWithCovariance, self.on_odometry)
+<<<<<<< HEAD
+        # rospy.Subscriber('/path', Path, self.on_path)
+        rospy.Service('robot1/exec_path', GetPlan, self.on_path)
+=======
         rospy.Subscriber('/path', Path, self.on_path)
+>>>>>>> 9b2cb00609773735cdd0a2bbbbdbe4fa7cf39385
 
         self.goal_achieved_pub = rospy.Publisher("robot_"+self.robotID+'_goal_achieved', Bool,
                                                  queue_size=1)
@@ -267,7 +276,12 @@ class GoToGoalNode:
 
         #self.pose = self.get_angle_pose(newPose.pose)
 
+<<<<<<< HEAD
+    def on_path(self, plan):
+        path = plan.path
+=======
     def on_path(self, path):
+>>>>>>> 9b2cb00609773735cdd0a2bbbbdbe4fa7cf39385
         self.action_client.wait_for_server()
         action_path = followPathGoal()
         #action_goal.pose.pose = goal.pose
@@ -299,5 +313,9 @@ if __name__ == '__main__':
     try:
         node = GoToGoalNode()
         node.main()
+<<<<<<< HEAD
+        rospy.spin()
+=======
+>>>>>>> 9b2cb00609773735cdd0a2bbbbdbe4fa7cf39385
     except rospy.ROSInterruptException:
         pass
