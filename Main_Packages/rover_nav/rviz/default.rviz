@@ -4,8 +4,8 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
-        - /Global Options1
-        - /Status1
+        - /Path2
+        - /Pose1
       Splitter Ratio: 0.6941176652908325
     Tree Height: 379
   - Class: rviz/Selection
@@ -161,106 +161,6 @@ Visualization Manager:
       Update Interval: 0
       Value: true
       Visual Enabled: true
-    - Alpha: 1
-      Class: rviz/RobotModel
-      Collision Enabled: false
-      Enabled: true
-      Links:
-        All Links Enabled: true
-        Expand Joint Details: false
-        Expand Link Details: false
-        Expand Tree: false
-        Link Tree Style: Links in Alphabetic Order
-        base_footprint:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        caster_front:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        caster_rear:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        upper_plate:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        wheel_left:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        wheel_right:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-      Name: RobotModel
-      Robot Description: robot_description_3
-      TF Prefix: robot3
-      Update Interval: 0
-      Value: true
-      Visual Enabled: true
-    - Alpha: 1
-      Class: rviz/RobotModel
-      Collision Enabled: false
-      Enabled: true
-      Links:
-        All Links Enabled: true
-        Expand Joint Details: false
-        Expand Link Details: false
-        Expand Tree: false
-        Link Tree Style: Links in Alphabetic Order
-        base_footprint:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        caster_front:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        caster_rear:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        upper_plate:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        wheel_left:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        wheel_right:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-      Name: RobotModel
-      Robot Description: robot_description_4
-      TF Prefix: robot4
-      Update Interval: 0
-      Value: true
-      Visual Enabled: true
     - Class: rviz/Image
       Enabled: true
       Image Topic: /usb_cam/image_raw
@@ -278,7 +178,7 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        fiducial_10:
+        camera:
           Value: true
         map:
           Value: true
@@ -289,8 +189,6 @@ Visualization Manager:
         robot1/caster_front:
           Value: false
         robot1/caster_rear:
-          Value: false
-        robot1/odom:
           Value: false
         robot1/upper_plate:
           Value: false
@@ -306,48 +204,18 @@ Visualization Manager:
           Value: false
         robot2/caster_rear:
           Value: false
-        robot2/odom:
-          Value: false
         robot2/upper_plate:
           Value: false
         robot2/wheel_left:
           Value: false
         robot2/wheel_right:
           Value: false
-        robot3/base_footprint:
+        tag_10:
           Value: true
-        robot3/base_link:
-          Value: false
-        robot3/caster_front:
-          Value: false
-        robot3/caster_rear:
-          Value: false
-        robot3/odom:
-          Value: false
-        robot3/upper_plate:
-          Value: false
-        robot3/wheel_left:
-          Value: false
-        robot3/wheel_right:
-          Value: false
-        robot4/base_footprint:
+        tag_12:
           Value: true
-        robot4/base_link:
-          Value: false
-        robot4/caster_front:
-          Value: false
-        robot4/caster_rear:
-          Value: false
-        robot4/odom:
-          Value: false
-        robot4/upper_plate:
-          Value: false
-        robot4/wheel_left:
-          Value: false
-        robot4/wheel_right:
-          Value: false
-        world:
-          Value: false
+        tag_4:
+          Value: true
       Marker Alpha: 1
       Marker Scale: 1
       Name: TF
@@ -355,61 +223,36 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
-        fiducial_10:
-          map:
-            world:
-              robot1/odom:
-                robot1/base_footprint:
-                  robot1/base_link:
-                    robot1/caster_front:
-                      {}
-                    robot1/caster_rear:
-                      {}
-                    robot1/upper_plate:
-                      {}
-                    robot1/wheel_left:
-                      {}
-                    robot1/wheel_right:
-                      {}
-              robot2/odom:
-                robot2/base_footprint:
-                  robot2/base_link:
-                    robot2/caster_front:
-                      {}
-                    robot2/caster_rear:
-                      {}
-                    robot2/upper_plate:
-                      {}
-                    robot2/wheel_left:
-                      {}
-                    robot2/wheel_right:
-                      {}
-              robot3/odom:
-                robot3/base_footprint:
-                  robot3/base_link:
-                    robot3/caster_front:
-                      {}
-                    robot3/caster_rear:
-                      {}
-                    robot3/upper_plate:
-                      {}
-                    robot3/wheel_left:
-                      {}
-                    robot3/wheel_right:
-                      {}
-              robot4/odom:
-                robot4/base_footprint:
-                  robot4/base_link:
-                    robot4/caster_front:
-                      {}
-                    robot4/caster_rear:
-                      {}
-                    robot4/upper_plate:
-                      {}
-                    robot4/wheel_left:
-                      {}
-                    robot4/wheel_right:
-                      {}
+        camera:
+          tag_10:
+            robot2/base_footprint:
+              robot2/base_link:
+                robot2/caster_front:
+                  {}
+                robot2/caster_rear:
+                  {}
+                robot2/upper_plate:
+                  {}
+                robot2/wheel_left:
+                  {}
+                robot2/wheel_right:
+                  {}
+          tag_12:
+            map:
+              {}
+          tag_4:
+            robot1/base_footprint:
+              robot1/base_link:
+                robot1/caster_front:
+                  {}
+                robot1/caster_rear:
+                  {}
+                robot1/upper_plate:
+                  {}
+                robot1/wheel_left:
+                  {}
+                robot1/wheel_right:
+                  {}
       Update Interval: 0
       Value: true
     - Alpha: 0.699999988079071
@@ -461,7 +304,7 @@ Visualization Manager:
     - Alpha: 1
       Buffer Length: 1
       Class: rviz/Path
-      Color: 25; 255; 0
+      Color: 164; 0; 0
       Enabled: true
       Head Diameter: 0.30000001192092896
       Head Length: 0.20000000298023224
@@ -480,6 +323,22 @@ Visualization Manager:
       Shaft Diameter: 0.10000000149011612
       Shaft Length: 0.10000000149011612
       Topic: /move_base/NavfnROS/plan
+      Unreliable: false
+      Value: true
+    - Alpha: 1
+      Axes Length: 1
+      Axes Radius: 0.10000000149011612
+      Class: rviz/Pose
+      Color: 255; 25; 0
+      Enabled: true
+      Head Length: 0.30000001192092896
+      Head Radius: 0.10000000149011612
+      Name: Pose
+      Queue Size: 10
+      Shaft Length: 1
+      Shaft Radius: 0.05000000074505806
+      Shape: Arrow
+      Topic: /location_publisher
       Unreliable: false
       Value: true
   Enabled: true
@@ -510,7 +369,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 2.899732828140259
+      Distance: 4.203826427459717
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -518,17 +377,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -0.2653895318508148
-        Y: -0.1326160877943039
-        Z: -0.3348430097103119
+        X: 0.0626630038022995
+        Y: -0.035958800464868546
+        Z: -0.432026743888855
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.5047967433929443
+      Pitch: 1.0747967958450317
       Target Frame: <Fixed Frame>
-      Yaw: 5.038578987121582
+      Yaw: 3.8185112476348877
     Saved: ~
 Window Geometry:
   Displays:

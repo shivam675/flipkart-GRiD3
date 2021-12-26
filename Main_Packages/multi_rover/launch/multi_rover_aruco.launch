@@ -3,8 +3,8 @@
        Access with slash at the beginning -->
   <param name="robot_description_1" command="$(find xacro)/xacro $(find rover_description)/urdf/all_4_rovers/rover_1.xacro" />
   <param name="robot_description_2" command="$(find xacro)/xacro $(find rover_description)/urdf/all_4_rovers/rover_2.xacro" />
-  <param name="robot_description_3" command="$(find xacro)/xacro $(find rover_description)/urdf/all_4_rovers/rover_3.xacro" />
-  <param name="robot_description_4" command="$(find xacro)/xacro $(find rover_description)/urdf/all_4_rovers/rover_4.xacro" />
+  <!-- <param name="robot_description_3" command="$(find xacro)/xacro $(find rover_description)/urdf/all_4_rovers/rover_3.xacro" /> -->
+  <!-- <param name="robot_description_4" command="$(find xacro)/xacro $(find rover_description)/urdf/all_4_rovers/rover_4.xacro" /> -->
   <!-- <param name="robot_description_1" command="$(find xacro)/xacro $(find rover_description)/urdf/rover.xacro" /> -->
   <!-- <param name="robot_description_2" command="$(find xacro)/xacro $(find rover_description)/urdf/rover.xacro" />
   <param name="robot_description_3" command="$(find xacro)/xacro $(find rover_description)/urdf/rover.xacro" />
@@ -19,7 +19,7 @@
       <arg name="init_pose" value="-x -0.387 -y -1.291 -z 0.01 -R 0 -P 0 -Y 1.571" />
       <arg name="robot_name"  value="Robot1" />
 
-    <node name="spawn_m_model" pkg="gazebo_ros" type="spawn_model" args="$(arg init_pose) -urdf -param /robot_description_1 -model $(arg robot_name)" respawn="false" output="screen" />
+    <!-- <node name="spawn_m_model" pkg="gazebo_ros" type="spawn_model" args="$(arg init_pose) -urdf -param /robot_description_1 -model $(arg robot_name)" respawn="false" output="screen" /> -->
     
     <node pkg="robot_state_publisher" type="robot_state_publisher" name="$(arg robot_name)robot_state_publisher" output="screen" respawn="false">
     <remap from="robot_description" to="robot_description_1" />
@@ -44,11 +44,11 @@
   <group ns="robot2">
     <param name="tf_prefix" value="robot2" />
 
-      <arg name="init_pose" value="-x -0.2124 -y -1.291 -z 0.01 -R 0 -P 0 -Y 1.571" />
+      <!-- <arg name="init_pose" value="-x -0.2124 -y -1.291 -z 0.01 -R 0 -P 0 -Y 1.571" /> -->
       <arg name="robot_name"  value="Robot2" />
       
-     <node name="spawn_m_model" pkg="gazebo_ros" type="spawn_model" args="$(arg init_pose) -urdf -param /robot_description_2 -model $(arg robot_name)"
-     respawn="false" output="screen" />
+     <!-- <node name="spawn_m_model" pkg="gazebo_ros" type="spawn_model" args="$(arg init_pose) -urdf -param /robot_description_2 -model $(arg robot_name)" -->
+     <!-- respawn="false" output="screen" /> -->
      
     <node pkg="robot_state_publisher" type="robot_state_publisher" name="$(arg robot_name)robot_state_publisher" output="screen">
     <param name="publish_frequency" value="10" />
@@ -66,7 +66,7 @@
   </group>
 
   <!-- BEGIN ROBOT 3-->
-  <group ns="robot3">
+  <!-- <group ns="robot3">
     <param name="tf_prefix" value="robot3" />
 
       <arg name="init_pose" value="-x 0.217 -y -1.291 -z 0.01 -R 0 -P 0 -Y 1.571" />
@@ -78,20 +78,20 @@
     <node pkg="robot_state_publisher" type="robot_state_publisher" name="$(arg robot_name)robot_state_publisher" output="screen">
     <param name="publish_frequency" value="10" />
     
-    <remap from="robot_description" to="robot_description_3" />
+    <remap from="robot_description" to="robot_description_3" /> -->
     <!-- <remap from="joint_states" to="$(arg robot_name)_joint_states" /> -->
-    </node>
+    <!-- </node>
 
 
     <node pkg="joint_state_publisher" type="joint_state_publisher" name="$(arg robot_name)_joint_state_publisher" output="screen">
     <remap from="robot_description" to="/robot_description_3" />
-    <param name="publish_frequency" value="10" />
+    <param name="publish_frequency" value="10" /> -->
     <!-- <remap from="joint_states" to="$(arg robot_name)joint_joint_states" /> -->
-    </node>
-  </group>
+    <!-- </node>
+  </group> -->
 
 <!-- BEGIN ROBOT 4-->
-    <group ns="robot4">
+    <!-- <group ns="robot4">
     <param name="tf_prefix" value="robot4" />
       <arg name="init_pose" value="-x 0.3765 -y -1.291 -z 0.01 -R 0 -P 0 -Y 1.571" />
       <arg name="robot_name"  value="Robot4" />
@@ -102,15 +102,15 @@
     <node pkg="robot_state_publisher" type="robot_state_publisher" name="$(arg robot_name)robot_state_publisher" output="screen">
     <param name="publish_frequency" value="10" />
     
-    <remap from="robot_description" to="robot_description_4" />
+    <remap from="robot_description" to="robot_description_4" /> -->
     <!-- <remap from="joint_states" to="$(arg robot_name)_joint_states" /> -->
-    </node>
+    <!-- </node>
 
     <node pkg="joint_state_publisher" type="joint_state_publisher" name="$(arg robot_name)_joint_state_publisher" output="screen">
     <remap from="robot_description" to="/robot_description_4" />
-    <param name="publish_frequency" value="10" />
+    <param name="publish_frequency" value="10" /> -->
     <!-- <remap from="joint_states" to="$(arg robot_name)joint_joint_states" /> -->
-    </node>
-  </group>
+    <!-- </node>
+  </group> -->
 
 </launch>

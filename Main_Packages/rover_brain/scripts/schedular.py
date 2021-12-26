@@ -33,13 +33,15 @@ class schedualar:
 
     def check_who_is_free(self):
         while self.keep_checking_status:
-            self.rover_status_dict['rover_one'] = rospy.get_param('robot1/is_running', default=False)
-            self.rover_status_dict['rover_two'] = rospy.get_param('robot2/is_running', default=False)
+            self.rover_status_dict['rover_one'] = rospy.get_param('robot1/is_running', default=True)
+            # self.rover_status_dict['rover_one'] = rospy.get_param('robot1/is_running', default=False)
+            self.rover_status_dict['rover_two'] = rospy.get_param('robot2/is_running', default=True)
             ####################### 
             # Check which induct is free
             #######################
-            self.induct_station_one = rospy.get_param('induct_station_1', default = False)
-            self.induct_station_two = rospy.get_param('induct_station_2', default = False)
+            self.induct_station_one = rospy.get_param('induct_station_1', default = True)
+            # self.induct_station_one = rospy.get_param('induct_station_1', default = False)
+            self.induct_station_two = rospy.get_param('induct_station_2', default = True)
             print(self.rover_status_dict)
             rospy.sleep(0.4)
 
@@ -93,7 +95,7 @@ class schedualar:
                 # rospy.loginfo('new package initiated')
                 if self.free_rover != None and self.induct_station_two:
                     data_list = self.open_list_two.pop(0)
-                    mes = self.encode_goals(data_list[0], 'dock_one', data_list[2])
+                    mes = self.encode_goals(data_list[0], 'dock_two', data_list[2])
                     exec_srv = rospy.ServiceProxy('/schedule/' + self.free_rover, get_task)
                     exec_srv(mes.package_id, mes.package_name, mes.chute_name, mes.dock_station_name)
                     self.package_count += 1
@@ -106,9 +108,9 @@ class schedualar:
         self.t_one = Thread(target = self.plan_for_induct_one)
         self.t_one.start()
 
-    # def thread_for_plan_two(self):
-    #     self.t_two = Thread(target = self.plan_for_induct_two)
-    #     self.t_two.start()
+    def thread_for_plan_two(self):
+        self.t_two = Thread(target = self.plan_for_induct_two)
+        self.t_two.start()
 
 
     def read_csv(self):
@@ -132,5 +134,6 @@ if __name__ == '__main__':
     k.thread_for_service()
     k.thread_for_plan_one()
     rospy.loginfo('1 main thread and 2 sub threads running')
-    k.plan_for_induct_two()
-    # k.thread_for_plan_two()
+    # k.plan_for_induct_two()
+    k.thread_for_plan_two()
+    rospy.loginfo('All Done')
