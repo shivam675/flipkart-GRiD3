@@ -1,0 +1,303 @@
+#! /usr/bin/env python
+from __future__ import division
+
+import rospy
+from math import pi, asin, acos, fabs, radians, atan2, atan
+from tf.transformations import euler_from_quaternion
+from geometry_msgs.msg import Twist, PoseStamped, PoseWithCovariance 
+from nav_msgs.msg import Path
+from nav_msgs.msg import Odometry
+from std_msgs.msg import Float32, Bool
+import actionlib
+import sys
+
+
+from diff_drive import goal_controller
+from diff_drive import pose
+from diff_drive.msg import followPathAction, followPathGoal, followPathResult
+ 
+
+class GoToGoalNode:
+
+    def __init__(self):
+        self.controller = goal_controller.GoalController()
+        self.desired_path = Path()
+        self.sim = False
+
+        if(len(sys.argv)<2):
+            print("Error: enter simulation or IRL and bot ID")  ##robot id is robot1, robot2 ...
+
+        if(sys.argv[1]=='sim'):
+            self.sim = True   ##enter sim mode
+
+        self.robotID = sys.argv[2]
+
+
+    def main(self):
+        rospy.init_node('path_controller_'+ self.robotID)
+
+        self.action_name = 'path_controller_' + self.robotID
+        self.action_server \
+            = actionlib.SimpleActionServer(self.action_name, followPathAction,
+                                           execute_cb=self.on_execute,
+                                           auto_start=False)
+
+        self.action_client = actionlib.SimpleActionClient(
+            'path_controller_'+ self.robotID, followPathAction)
+
+        self.dist_pub = rospy.Publisher('~distance_to_goal',
+                                        Float32, queue_size=10)
+        #self.twist_pub = rospy.Publisher('/' +self.robotID+ '/cmd_vel',Twist, queue_size=10)
+        self.twist_pub = rospy.Publisher('/cmd_vel',Twist, queue_size=10)
+
+        self.node_name = rospy.get_name()
+        rospy.loginfo("{0} started".format(self.node_name))
+
+        rospy.Subscriber('/robot'+ str(self.robotID)+ '/odom', Odometry, self.on_odometry)
+        #rospy.Subscriber('odom', PoseWithCovariance, self.on_odometry)
+        rospy.Subscriber('/path', Path, self.on_path)
+
+        self.goal_achieved_pub = rospy.Publisher("robot_"+self.robotID+'_goal_achieved', Bool,
+                                                 queue_size=1)
+
+
+
+
+        if(self.sim):
+            rate = rospy.get_param('~rate', 50.0)
+
+        else:
+            rate = rospy.get_param('~rate', 10.0)
+        self.rate = rospy.Rate(rate)
+        self.dT = 1 / rate
+
+        self.kP = rospy.get_param('~kP', 3.0)
+        self.kA = rospy.get_param('~kA', 8.0)
+        self.kB = rospy.get_param('~kB', -1.5)
+        self.controller.set_constants(self.kP, self.kA, self.kB)
+
+
+
+        self.controller.set_linear_tolerance(
+            rospy.get_param('~linear_tolerance', 0.02))
+        self.controller.set_angular_tolerance(
+            rospy.get_param('~angular_tolerance', 5/180*pi))
+
+        self.controller.set_max_linear_speed(
+            rospy.get_param('~max_linear_speed', 1))
+        self.controller.set_min_linear_speed(
+            rospy.get_param('~min_linear_speed', 0))
+        self.controller.set_max_angular_speed(
+            rospy.get_param('~max_angular_speed', 1))
+        self.controller.set_min_angular_speed(
+            rospy.get_param('~min_angular_speed', 0))
+        self.controller.set_max_linear_acceleration(
+            rospy.get_param('~max_linear_acceleration', 0.05))
+        self.controller.set_max_angular_acceleration(
+            rospy.get_param('~max_angular_acceleration', 0.1))
+
+        # Set whether to allow movement backward. Backward movement is
+        # safe if the robot can avoid obstacles while traveling in
+        # reverse. We default to forward movement only since many
+        # sensors are front-facing.
+        self.controller.set_forward_movement_only(
+            rospy.get_param('~forwardMovementOnly', False))
+
+        self.init_pose()
+        self.goal = None
+
+        self.action_server.start()
+        rospy.spin()
+
+
+    def normalize_pi(self, alpha):
+        while alpha > pi:
+            alpha -= 2*pi
+        while alpha < -pi:
+            alpha += 2*pi
+        return alpha
+
+
+    def normalize_half_pi(self, alpha):
+        alpha = self.normalize_pi(alpha)
+        if alpha > pi/2:
+            return alpha - pi
+        elif alpha < -pi/2:
+            return alpha + pi
+        else:
+            return alpha
+
+    def getNextHeading(self, curr, prev):
+
+        heading = atan2(curr.y - prev.y, curr.x - prev.x)
+        print(self.normalize_half_pi(heading))
+        return self.normalize_half_pi(heading)
+
+
+
+    def get_filtered_path(self, wp_list_quat):
+        self.min_filter_angle = 90
+        #reduces number of waypoints based on orientation change between them
+        filtered_path = []
+        wp_list = []
+        for wp in wp_list_quat:
+            wp_list.append(self.get_angle_pose(wp.pose))
+
+
+        print("*************************")
+        print("length of list is")
+        print(len(wp_list))
+        print(wp_list[0])
+        print(wp_list[1])
+
+        filtered_path.append(wp_list[0])
+        for i,wp in enumerate(wp_list[1:]):
+
+
+            if (fabs(self.getNextHeading(wp_list[i],wp_list[i-1]))>radians(self.min_filter_angle)) or (i == len(wp_list)-2):
+                filtered_path.append(wp)
+
+        print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<     >>>>>>>>>>>>>>>>>>>>>>>>>>")
+        for wp in filtered_path:
+            print(wp)
+
+
+        return filtered_path
+
+
+
+
+    def on_execute(self, path):
+
+        pre_empt_flag= False
+        success = True
+        path = self.get_filtered_path(path.path.poses)
+
+        for i,wp in enumerate(path):
+            self.posDoneFlag = False
+            self.orDoneFlag = False
+
+            self.goal = wp
+            rospy.loginfo('next way point: (%f,%f,%f)', self.goal.x, self.goal.y,
+                      self.goal.theta)
+
+            
+            while not rospy.is_shutdown() and self.goal is not None:
+                # Allow client to preempt the goal.
+                if self.action_server.is_preempt_requested():
+                    rospy.loginfo('Path preempted')
+                    self.send_velocity(0, 0)
+                    self.action_server.set_preempted()
+                    pre_empt_flag = True
+                    success = False
+                    break
+
+                if i == len(path)-1:
+                    self.publish(True)     ##don't take the orientation
+
+                else:
+                    self.publish(False)
+                self.rate.sleep()
+            if pre_empt_flag:
+                break
+
+
+        result = followPathResult()
+        result.success = success
+        self.action_server.set_succeeded(result)
+
+    def init_pose(self):
+        self.pose = pose.Pose()
+        self.pose.x = 0
+        self.pose.y = 0
+        self.pose.theta = 0
+
+    def publish(self, ignore_orient):
+        #print("current pose is: ")
+        #print(self.pose)
+        self.orDoneFlag = ignore_orient
+
+        #if self.controller.at_goal_position(self.pose, self.goal) and self.controller.at_goal_orientation(self.pose, self.goal):
+        
+        if not self.controller.at_goal_position(self.pose, self.goal) and not self.posDoneFlag:
+            self.desired = self.controller.get_velocity_PID(self.pose, self.goal,self.dT , goToPos=True)
+           
+        elif not self.controller.at_goal_orientation(self.pose, self.goal) and not self.orDoneFlag: 
+            self.desired = self.controller.get_velocity_PID(self.pose, self.goal, self.dT, goToPos = False)
+            
+
+        # if self.goal is not None \
+        #    and (desired.xVel!=0.0 or desired.thetaVel!=0.0):
+        #     rospy.loginfo(
+        #         'current=(%f,%f,%f) goal=(%f,%f,%f)  xVel=%f thetaVel=%f',
+        #         self.pose.x, self.pose.y, self.pose.theta,
+        #         self.goal.x, self.goal.y, self.goal.theta,
+        #         desired.xVel, desired.thetaVel)
+
+        d = self.controller.get_goal_distance(self.pose, self.goal)
+        self.dist_pub.publish(d)
+
+        self.send_velocity(self.desired.xVel, self.desired.thetaVel)
+
+        # Forget the goal if achieved.
+        if self.controller.at_goal_position(self.pose, self.goal) and not self.posDoneFlag:
+            rospy.loginfo('arrived at position, turning to orientation')
+            self.posDoneFlag = True
+
+        elif self.controller.at_goal_orientation(self.pose, self.goal) and self.posDoneFlag and not self.orDoneFlag:
+            rospy.loginfo('achieved orientation, stopping. Reached goal: ')
+            rospy.loginfo(self.goal)
+            self.orDoneFlag= True 
+            self.goal = None
+            msg = Bool()
+            msg.data = True
+            self.send_velocity(0, 0)
+
+            self.goal_achieved_pub.publish(msg)
+
+
+    def send_velocity(self, xVel, thetaVel):
+        twist = Twist()
+        twist.linear.x = xVel
+        twist.angular.z = thetaVel
+        self.twist_pub.publish(twist)
+
+    def on_odometry(self, newPose):
+        self.pose = self.get_angle_pose(newPose.pose.pose)
+
+        #self.pose = self.get_angle_pose(newPose.pose)
+
+    def on_path(self, path):
+        self.action_client.wait_for_server()
+        action_path = followPathGoal()
+        #action_goal.pose.pose = goal.pose
+        action_path.path = path
+        self.action_client.send_goal(action_path)
+
+    def get_angle_pose(self, quaternion_pose):
+        q = [quaternion_pose.orientation.x,
+             quaternion_pose.orientation.y,
+             quaternion_pose.orientation.z,
+             quaternion_pose.orientation.w]
+        roll, pitch, yaw = euler_from_quaternion(q)
+
+        angle_pose = pose.Pose()
+
+        if(self.sim):
+            angle_pose.x = quaternion_pose.position.x
+            angle_pose.y = quaternion_pose.position.y
+            angle_pose.theta = yaw
+
+        else:
+            angle_pose.x = quaternion_pose.position.x
+            angle_pose.y = quaternion_pose.position.y
+            angle_pose.theta = yaw
+
+        return angle_pose
+
+if __name__ == '__main__':
+    try:
+        node = GoToGoalNode()
+        node.main()
+    except rospy.ROSInterruptException:
+        pass
