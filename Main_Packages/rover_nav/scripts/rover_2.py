@@ -29,6 +29,7 @@ class rover_one:
         self.return_status = 'Done'
         self.location_dict = {}
         self.pub_locations = rospy.Publisher('location_publisher', PoseStamped, queue_size=10)
+        self.dock_dict = {'dock_one': 'induct_station_1', 'dock_two': 'induct_station_2'}
 
     def service_server(self):
         print('Rospy server started')
@@ -38,7 +39,7 @@ class rover_one:
     def get_task_callback(self, req):
         # rospy.loginfo('Request Received !')
 
-        rospy.set_param('robot2/is_running', False)
+        rospy.set_param('robot2/can_run', default=False)
         print('requesting odom')
         self.get_odom()
 
@@ -47,10 +48,8 @@ class rover_one:
         self.package_name = req.package_name
         self.chute_name = req.chute_name
         self.dock_station_name = req.dock_station_name
-        # self.path_one = None
-        # self.path_two = None
-        # m = Path()
-        # m.poses
+        
+        rospy.set_param(self.dock_dict[self.dock_station_name], False)
 
         print('request_recieved')
         self.process_request()
@@ -90,14 +89,6 @@ class rover_one:
         self.start_pose.header.frame_id = "map"
         self.goal_pose.header.frame_id = "map"
 
-        # self.odom_pose.header.stamp = rospy.Time.now()
-        # self.start_pose.header.stamp = rospy.Time.now()
-        # self.goal_pose.header.stamp = rospy.Time.now()
-
-        # self.odom_pose.header.seq = 0
-        # self.start_pose.header.seq = 0
-        # self.goal_pose.header.seq = 0
-
         self.odom_pose.pose.position.x = self.odom_x
         self.odom_pose.pose.position.y = self.odom_y
 
@@ -108,17 +99,7 @@ class rover_one:
         self.goal_pose.pose.position.y = self.location_dict['chutes'][self.chute_name]['py']
 
         print('messages initiated')
-        ###################################
-        # req_1.start = self.odom_pose
-        # req_1.goal = self.start_pose
-        # req_1.tolerance = 0.2
-        ###################################
-        # req_2.start = self.start_pose
-        # req_2.goal = self.goal_pose
-        # req_2.tolerance = 0.2
-        ###################################
-        # print(self.odom_pose)
-        # print(self.start_pose)
+
         print(self.odom_x, self.odom_y)
         print(self.start_pose.pose.position.x, self.start_pose.pose.position.y)
         print(self.goal_pose.pose.position.x, self.goal_pose.pose.position.y)
@@ -128,10 +109,9 @@ class rover_one:
         rospy.sleep(1)
         self.path_two = self.get_plan.call(self.start_pose, self.goal_pose, 0.3)
         rospy.sleep(3)
-        rospy.set_param('robot2/is_running', True)
-        # print(self.path_one)
-        # print(self.path_two)
-        # print(len(self.path_two.plan.poses))
+
+        self.send_paths()
+
 
     
     def get_odom(self):
@@ -140,14 +120,30 @@ class rover_one:
         self.odom_x, self.odom_y = x.pose.pose.position.x, x.pose.pose.position.y
 
     def send_paths(self):
-        rospy.set_param('robot2/is_running', True)
+        # sending path from current position to induct station
         self.sendpath.publish(self.path_one)
+        # waiting for sucess string when path execution is done
         self.result_1 = rospy.wait_for_message('/waiting_for_response_two', Bool, timeout=None)
         rospy.loginfo('sending path to the rover_script : ' + str(self.result_1))
+        
+        # The rover has reached the induct station and waiting for package to be loaded
+        ########### LOAD PACKAGE ###########
+        rospy.sleep(15)
+        ###################################
+
+        # saying to schedular that induct station is free and can accept another request
+        rospy.set_param(self.dock_dict[self.dock_station_name], True)
+
+        # Rover now starts traversing from induct station to chute pose
         self.result_2 = self.sendpath.publish(self.path_two)
-        # p = Bool()
+
+        # Waiting until exec script resopnds with the string that execution is done
         self.result_1 = rospy.wait_for_message('/waiting_for_response_two', Bool, timeout=None)
         rospy.loginfo('sending path to the rover_script : ' + str(self.result_2))
+        rospy.sleep(1)
+
+        # Says to schedualr script that rover is free to run
+        rospy.set_param('robot2/can_run', default=True)
 
 if __name__ == '__main__':
     rospy.init_node('rover_2_node', anonymous=True)

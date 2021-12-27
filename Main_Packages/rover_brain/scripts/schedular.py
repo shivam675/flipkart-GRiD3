@@ -24,6 +24,10 @@ class schedualar:
         self.induct_station_two = None
         self.rover_status_dict = {}
         self.free_rover = ''
+        rospy.set_param('robot1/can_run', default=True)
+        rospy.set_param('robot2/can_run', default=True)
+        rospy.set_param('is_free/induct_station_1', default=True)
+        rospy.set_param('is_free/induct_station_2', default=True)
         pass
 
 
@@ -33,15 +37,15 @@ class schedualar:
 
     def check_who_is_free(self):
         while self.keep_checking_status:
-            self.rover_status_dict['rover_one'] = rospy.get_param('robot1/is_running', default=True)
-            # self.rover_status_dict['rover_one'] = rospy.get_param('robot1/is_running', default=False)
-            self.rover_status_dict['rover_two'] = rospy.get_param('robot2/is_running', default=True)
+            self.rover_status_dict['rover_one'] = rospy.get_param('robot1/can_run', default=False)
+            # self.rover_status_dict['rover_one'] = rospy.get_param('robot1/can_run', default=False)
+            self.rover_status_dict['rover_two'] = rospy.get_param('robot2/can_run', default=False)
             ####################### 
             # Check which induct is free
             #######################
-            self.induct_station_one = rospy.get_param('induct_station_1', default = True)
+            self.induct_station_one = rospy.get_param('is_free/induct_station_1', default = False)
             # self.induct_station_one = rospy.get_param('induct_station_1', default = False)
-            self.induct_station_two = rospy.get_param('induct_station_2', default = True)
+            self.induct_station_two = rospy.get_param('is_free/induct_station_2', default = False)
             print(self.rover_status_dict)
             rospy.sleep(0.4)
 
