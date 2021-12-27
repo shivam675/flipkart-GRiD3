@@ -1,0 +1,48 @@
+chutes:
+# having problems
+  Mumbai:
+    px: -0.63
+    py: 0.833
+
+  Delhi:
+    px: 0
+    py: 0.832
+
+  Kolkata:
+    px: 0.63
+    py: 0.832
+
+# Chennai is having problems
+  Chennai:
+    px: -0.61
+    py: 0.21
+
+  Bengaluru:
+    px: 0.0
+    py: 0.24
+
+  Hyderabad:
+    px: 0.60
+    py: 0.23
+
+  Pune:
+    px: -0.64
+    py: -0.386
+
+  Ahmedabad:
+    px: 0.0
+    py: -0.386
+
+  Jaipur:
+    px: 0.60
+    py: -0.386
+
+
+docks:
+  dock_one:
+    px: -1.132
+    py: 0.231
+
+  dock_two:
+    px: -1.14
+    py: -0.22

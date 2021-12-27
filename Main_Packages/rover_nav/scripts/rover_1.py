@@ -29,7 +29,8 @@ class rover_one:
         self.odom_x = None
         self.odom_y = None
         self.return_status = 'Done'
-        self.location_dict = {}
+        self.location_induct_one = {}
+        self.location_induct_two = {}
         self.pub_locations = rospy.Publisher('location_publisher', PoseStamped, queue_size=10)
         self.sendpath = rospy.Publisher('robot1/exec_path', Path)
         self.dock_dict = {'dock_one': 'induct_station_1', 'dock_two': 'induct_station_2'}
@@ -60,19 +61,34 @@ class rover_one:
         return self.return_status
     
     def read_locations(self):
-        with open(path + '/info/locations.yaml') as file:
+        with open(path + '/info/locations_for_induct_one.yaml') as file:
             data = yaml.load(file, yaml.FullLoader)
             # print(data['chutes']['mumbai']['px'])
-            self.location_dict = data
+            self.location_induct_one = data
+        
+        with open(path + '/info/locations_for_induct_two.yaml') as file:
+            data = yaml.load(file, yaml.FullLoader)
+            # print(data['chutes']['mumbai']['px'])
+            self.location_induct_two = data
             
         # while not rospy.is_shutdown():
-        for i in self.location_dict['chutes']:
+        for i in self.location_induct_one['chutes']:
             # print(self.location_dict['chutes'][i]['px'])
             # pass
             point = PoseStamped()
             point.header.frame_id = 'map'
-            point.pose.position.x = self.location_dict['chutes'][i]['px']
-            point.pose.position.y = self.location_dict['chutes'][i]['py']
+            point.pose.position.x = self.location_induct_one['chutes'][i]['px']
+            point.pose.position.y = self.location_induct_one['chutes'][i]['py']
+            self.pub_locations.publish(point)
+            rospy.sleep(0.3)
+        
+        for i in self.location_induct_two['chutes']:
+            # print(self.location_dict['chutes'][i]['px'])
+            # pass
+            point = PoseStamped()
+            point.header.frame_id = 'map'
+            point.pose.position.x = self.location_induct_two['chutes'][i]['px']
+            point.pose.position.y = self.location_induct_two['chutes'][i]['py']
             self.pub_locations.publish(point)
             rospy.sleep(0.3)
         # print(self.location_dict)
@@ -96,11 +112,18 @@ class rover_one:
         self.odom_pose.pose.position.x = self.odom_x
         self.odom_pose.pose.position.y = self.odom_y
 
-        self.start_pose.pose.position.x = self.location_dict['docks'][self.dock_station_name]['px']
-        self.start_pose.pose.position.y = self.location_dict['docks'][self.dock_station_name]['py']
+        if self.dock_station_name == 'dock_one' :
+            self.start_pose.pose.position.x = self.location_induct_one['docks'][self.dock_station_name]['px']
+            self.start_pose.pose.position.y = self.location_induct_one['docks'][self.dock_station_name]['py']
 
-        self.goal_pose.pose.position.x = self.location_dict['chutes'][self.chute_name]['px']
-        self.goal_pose.pose.position.y = self.location_dict['chutes'][self.chute_name]['py']
+            self.goal_pose.pose.position.x = self.location_induct_one['chutes'][self.chute_name]['px']
+            self.goal_pose.pose.position.y = self.location_induct_one['chutes'][self.chute_name]['py']
+        else:
+            self.start_pose.pose.position.x = self.location_induct_two['docks'][self.dock_station_name]['px']
+            self.start_pose.pose.position.y = self.location_induct_two['docks'][self.dock_station_name]['py']
+
+            self.goal_pose.pose.position.x = self.location_induct_two['chutes'][self.chute_name]['px']
+            self.goal_pose.pose.position.y = self.location_induct_two['chutes'][self.chute_name]['py']
 
         print('messages initiated')
         print(self.odom_x, self.odom_y)
