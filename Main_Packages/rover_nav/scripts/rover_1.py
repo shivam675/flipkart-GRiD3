@@ -32,7 +32,7 @@ class rover_one:
         self.location_induct_one = {}
         self.location_induct_two = {}
         self.pub_locations = rospy.Publisher('location_publisher', PoseStamped, queue_size=10)
-        self.sendpath = rospy.Publisher('robot1/exec_path', Path)
+        self.sendpath = rospy.Publisher('robot1/exec_path', Path, queue_size=2)
         self.dock_dict = {'dock_one': 'induct_station_1', 'dock_two': 'induct_station_2'}
 
     def service_server(self):
@@ -42,7 +42,7 @@ class rover_one:
 
     def get_task_callback(self, req):
 
-        rospy.set_param('robot1/can_run', default=False)
+        rospy.set_param('robot1/can_run', False)
         print('requesting odom')
         self.get_odom()
 
@@ -52,7 +52,7 @@ class rover_one:
         self.chute_name = req.chute_name
         self.dock_station_name = req.dock_station_name
         # self.path_one = None
-        rospy.set_param(self.dock_dict[self.dock_station_name], False)
+        # rospy.set_param(self.dock_dict[self.dock_station_name], False)
 
 
         print('request_recieved')
@@ -61,12 +61,12 @@ class rover_one:
         return self.return_status
     
     def read_locations(self):
-        with open(path + '/info/locations_for_induct_one.yaml') as file:
+        with open(path + '/info/location_for_induct_one.yaml') as file:
             data = yaml.load(file, yaml.FullLoader)
             # print(data['chutes']['mumbai']['px'])
             self.location_induct_one = data
         
-        with open(path + '/info/locations_for_induct_two.yaml') as file:
+        with open(path + '/info/location_for_induct_two.yaml') as file:
             data = yaml.load(file, yaml.FullLoader)
             # print(data['chutes']['mumbai']['px'])
             self.location_induct_two = data
@@ -158,18 +158,19 @@ class rover_one:
         ###################################
 
         # saying to schedular that induct station is free and can accept another request
-        rospy.set_param(self.dock_dict[self.dock_station_name], True)
+        rospy.set_param('is_free/' + self.dock_dict[self.dock_station_name], True)
 
         # Rover now starts traversing from induct station to chute pose
-        self.result_2 = self.sendpath.publish(self.path_two.plan)
+        self.sendpath.publish(self.path_two.plan)
 
         # Waiting until exec script resopnds with the string that execution is done
-        self.result_1 = rospy.wait_for_message('/waiting_for_response_one', Bool, timeout=None)
+        self.result_2 = rospy.wait_for_message('/waiting_for_response_one', Bool, timeout=None)
         rospy.loginfo('sending path to the rover_script : ' + str(self.result_2))
         rospy.sleep(1)
         
         # Says to schedualr script that rover is free to run
-        rospy.set_param('robot1/can_run', default=True)
+        rospy.set_param('robot1/can_run', True)
+        print('Done')
 
 
 

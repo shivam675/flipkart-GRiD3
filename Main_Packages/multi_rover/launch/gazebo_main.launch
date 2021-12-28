@@ -26,15 +26,28 @@
 
 
   <!-- <node pkg="tf" type="static_transform_publisher" name="base_to_cam" respawn="false" args="0 0 2.5 0 1 0 0 fiducial_10 camera_link 100"/> -->
+
+
+
   <node pkg="tf" type="static_transform_publisher" name="base_to_cam" respawn="false" args="0 0 0 0 0 0 tag_12 map 20"/>
   <node pkg="tf" type="static_transform_publisher" name="base_to_bot1" respawn="false" args="0 0 0 0 0 0 tag_10 robot1/base_footprint 20"/>
   <node pkg="tf" type="static_transform_publisher" name="base_to_bot2" respawn="false" args="0 0 0 0 0 0 tag_4 robot2/base_footprint 20"/>
+
+
+
+
 <!-- <node name="cambot_spawner" pkg="gazebo_ros" type="spawn_model" args="-x -0 -y 0 -z 0 -R 0 -P 0 -Y 0 -urdf -param /camera_description -model cam_bot" respawn="false" output="screen" /> -->
 
 
   <!-- include our robots -->
   <!-- <include file="$(find multi_rover)/launch/multi_rover.launch"/> -->
+
+<!-- Please remember to use this  -->
   <include file="$(find multi_rover)/launch/multi_rover_aruco.launch"/>
+  
+  
+  
+  <!-- <include file="$(find multi_rover)/launch/dummy_file.launch"/> -->
   <!-- <include file="$(find multi_rover)/launch/static_transform.launch"/> -->
   <!-- <include file="$(find make_markers)/launch/aruco_detect_ros.launch"/> -->
   <!-- <include file="$(find rover_description)/launch/robo_cam.launch"/> -->

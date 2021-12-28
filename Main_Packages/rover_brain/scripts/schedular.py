@@ -24,10 +24,10 @@ class schedualar:
         self.induct_station_two = None
         self.rover_status_dict = {}
         self.free_rover = ''
-        rospy.set_param('robot1/can_run', default=True)
-        rospy.set_param('robot2/can_run', default=True)
-        rospy.set_param('is_free/induct_station_1', default=True)
-        rospy.set_param('is_free/induct_station_2', default=True)
+        rospy.set_param('robot1/can_run', True)
+        rospy.set_param('robot2/can_run', True)
+        rospy.set_param('is_free/induct_station_1', True)
+        rospy.set_param('is_free/induct_station_2', True)
         pass
 
 
@@ -47,6 +47,7 @@ class schedualar:
             # self.induct_station_one = rospy.get_param('induct_station_1', default = False)
             self.induct_station_two = rospy.get_param('is_free/induct_station_2', default = False)
             print(self.rover_status_dict)
+            print(self.induct_station_one, self.induct_station_two)
             rospy.sleep(0.4)
 
 
@@ -74,36 +75,38 @@ class schedualar:
                 self.free_rover = None
 
 
-
-
     def plan_for_induct_one(self):
         while self.open_list_one:
+            rospy.sleep(0.5)
             try:
                 self.get_free_rover()
                 # rospy.loginfo('new package initiated')
                 if self.free_rover != None and self.induct_station_one:
+                    rospy.set_param('is_free/induct_station_1', False)
+                    print('Got Free Rover for Induct 1 : {}'.format(self.free_rover))
                     data_list = self.open_list_one.pop(0)
                     mes = self.encode_goals(data_list[0], 'dock_one', data_list[2])
                     exec_srv = rospy.ServiceProxy('/schedule/' + self.free_rover, get_task)
                     exec_srv(mes.package_id, mes.package_name, mes.chute_name, mes.dock_station_name)
                     self.package_count += 1
-                rospy.sleep(0.5)
             except TypeError:
                 pass
 
 
     def plan_for_induct_two(self):
         while self.open_list_two:
+            rospy.sleep(1.2)
             try:
                 self.get_free_rover()
                 # rospy.loginfo('new package initiated')
                 if self.free_rover != None and self.induct_station_two:
+                    rospy.set_param('is_free/induct_station_2', False)
+                    print('Got Free Rover for Induct 2 : {}'.format(self.free_rover))
                     data_list = self.open_list_two.pop(0)
                     mes = self.encode_goals(data_list[0], 'dock_two', data_list[2])
                     exec_srv = rospy.ServiceProxy('/schedule/' + self.free_rover, get_task)
                     exec_srv(mes.package_id, mes.package_name, mes.chute_name, mes.dock_station_name)
                     self.package_count += 1
-                rospy.sleep(0.5)
             except TypeError:
                 pass
     
