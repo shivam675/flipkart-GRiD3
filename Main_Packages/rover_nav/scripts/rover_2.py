@@ -17,7 +17,7 @@ path = path.get_path('rover_nav')
 
 
 class rover_one:
-    def __init__(self, name='rover_2') -> None:
+    def __init__(self, name='rover_2'):
         self.rover_name = name
         self.package_id = None
         self.package_name = None
@@ -142,7 +142,7 @@ class rover_one:
 
     def send_paths(self):
         # sending path from current position to induct station
-        self.sendpath.publish(self.path_one)
+        self.sendpath.publish(self.path_one.plan)
         # waiting for sucess string when path execution is done
         self.result_1 = rospy.wait_for_message('/waiting_for_response_two', Bool, timeout=None)
         rospy.loginfo('sending path to the rover_script : ' + str(self.result_1))
@@ -156,7 +156,7 @@ class rover_one:
         rospy.set_param(self.dock_dict[self.dock_station_name], True)
 
         # Rover now starts traversing from induct station to chute pose
-        self.result_2 = self.sendpath.publish(self.path_two)
+        self.result_2 = self.sendpath.publish(self.path_two.plan)
 
         # Waiting until exec script resopnds with the string that execution is done
         self.result_1 = rospy.wait_for_message('/waiting_for_response_two', Bool, timeout=None)
